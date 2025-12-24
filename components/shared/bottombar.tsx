@@ -22,8 +22,8 @@ const navItems = [
     icon: Briefcase01Icon,
   },
   {
-    label: "Company",
-    href: "/company",
+    label: "Team",
+    href: "/team",
     icon: Building01Icon,
   },
   {
