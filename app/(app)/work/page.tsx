@@ -1,9 +1,15 @@
+import { BottomNav } from '@/components/shared/bottombar'
+import Topbar from '@/components/shared/topbar'
 import React from 'react'
 
 
 function Page() {
   return (
-    <div>Work</div>
+    <div>
+      <Topbar title="Grover Tasks" backBtn/>
+      work
+      <BottomNav />
+    </div>
   )
 }
 

@@ -8,7 +8,7 @@ type Props = {
 
 function Topbar({ className, title, backBtn }: Props) {
   return (
-    <div className={`w-full h-16 bg-secondary text-black border-b-2 border-gray-400 sticky py-4 px-2 ${className}`}>
+    <div className={`w-full h-16 bg-white text-black border-b border-gray-200 sticky py-4 px-2 ${className}`}>
         <div className={`${backBtn ? 'block' : 'hidden'}`}>
             <p className="text-lg font-semibold cursor-pointer"></p>
         </div>
