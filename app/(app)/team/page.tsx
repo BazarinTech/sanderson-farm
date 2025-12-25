@@ -4,12 +4,12 @@ import { BottomNav } from '@/components/shared/bottombar'
 import Topbar from '@/components/shared/topbar'
 import React, { useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from '@base-ui/react'
 import { CheckmarkCircle01Icon, Copy01Icon } from 'hugeicons-react'
 import TeamTable from '@/components/team/team-table'
+import { Button } from '@/components/ui/button'
 
 const referralCode = "3G2HU3"
-const referralLink = `https://beandrivin.net/register?inviteCode=${referralCode}`
+const referralLink = `https://grover-worker.com/register?inviteCode=${referralCode}`
 
 // Mock team data
 const teamData = {
@@ -75,13 +75,13 @@ function Page() {
           <p className="text-xs text-muted-foreground">Team Size</p>
         </div>
         <div className="flex-1">
-          <p className="text-xl font-bold text-primary">KSH{stats.totalIncome.toFixed(2)}</p>
-          <p className="text-xs text-muted-foreground">Total Income</p>
+          <p className="text-xl font-bold text-primary">1</p>
+          <p className="text-xs text-muted-foreground">Total Active</p>
         </div>
       </div>
       <div className="mx-4 mt-4 text-center">
         <p className="text-xl font-bold text-foreground">KSH{stats.monthlyRecharge.toFixed(2)}</p>
-        <p className="text-xs text-muted-foreground">Monthly Recharge</p>
+        <p className="text-xs text-muted-foreground">Invite Income</p>
       </div>
 
       {/* Team Members Section */}

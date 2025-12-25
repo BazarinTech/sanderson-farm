@@ -22,21 +22,23 @@ import {
   Gif01Icon,
 } from "hugeicons-react"
 import Link from 'next/dist/client/link'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const menuItems = [
-  { icon: InformationCircleIcon, label: "Withdraw Information", href: "#" },
-  { icon: Agreement02Icon, label: "Partner Agreement", href: "#" },
-  { icon: Ticket02Icon, label: "My Coupon", href: "#" },
-  { icon: PackageIcon, label: "My Product", href: "#" },
-  { icon: File01Icon, label: "Record", href: "#" },
-  { icon: InformationSquareIcon, label: "About US", href: "#" },
-  { icon: LockPasswordIcon, label: "Reset Password", href: "#" },
+  { icon: InformationCircleIcon, label: "Withdraw Account", href: "/cashout-wallet" },
+  { icon: Agreement02Icon, label: "Telegram Channel", href: "#" },
+  { icon: Ticket02Icon, label: "My Coupon", href: "/bonus" },
+  { icon: PackageIcon, label: "Whatsapp group", href: "#" },
+  { icon: File01Icon, label: "Records", href: "/records" },
+  { icon: InformationSquareIcon, label: "About US", href: "/company" },
+  { icon: LockPasswordIcon, label: "Reset Password", href: "/reset-password" },
   { icon: CustomerServiceIcon, label: "Customer Service", href: "#" },
   { icon: Download02Icon, label: "App Download", href: "#" },
 ]
 
 function Page() {
+  const router = useRouter()
   return (
     <div>
       <Topbar title="Grover Profile" backBtn/>
@@ -69,20 +71,21 @@ function Page() {
             <Button
               variant="outline"
               className="w-full rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
+              onClick={() => router.push('/products')}
             >
               <CoinsSwapIcon size={16} className="mr-2" />
-              Obtain
+              Make more
             </Button>
           </Card>
 
           <Card className="p-4 bg-card">
             <div className="text-center mb-3">
               <p className="text-lg font-bold text-foreground">0</p>
-              <p className="text-xs text-muted-foreground">Coffee Beans</p>
+              <p className="text-xs text-muted-foreground">Active Team</p>
             </div>
-            <Button className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
+            <Button className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => router.push('/team')}>
               <Gif01Icon size={16} className="mr-2" />
-              Redeem
+              Invite more
             </Button>
           </Card>
         </div>
@@ -95,11 +98,12 @@ function Page() {
           <Button
             variant="outline"
             className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground py-6 bg-transparent"
+            onClick={() => router.push('/recharge')}
           >
             <Wallet01Icon size={20} className="mr-2" />
             Recharge
           </Button>
-          <Button className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 py-6">
+          <Button className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 py-6" onClick={() => router.push('/cashout')}>
             <Download01Icon size={20} className="mr-2" />
             Withdraw
           </Button>
