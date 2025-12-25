@@ -54,7 +54,7 @@ function Page() {
   const expiredOrders = orders.filter((order) => order.status === "expired")
   return (
     <div>
-      <Topbar title="Grover Tasks" backBtn/>
+      <Topbar title="Grover Tasks"/>
       {/* Summary Section */}
         <div className="px-4 py-6 mb-20">
 

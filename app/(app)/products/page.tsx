@@ -17,7 +17,7 @@ const products = [
 function Page() {
   return (
     <div>
-      <Topbar title="Grover Products" backBtn/>
+      <Topbar title="Grover Products" />
 
       <main className="max-w-md mx-auto px-4 py-4 space-y-4 mb-20">
         {products.map((product) => (

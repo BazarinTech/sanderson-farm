@@ -47,7 +47,7 @@ function Page() {
   }
   return (
     <div>
-      <Topbar title="Grover Team" backBtn/>
+      <Topbar title="Grover Team"/>
       {/* Invite Section */}
       <div className="mx-4 mt-4 rounded-xl bg-muted/50 p-5 ">
         <p className="text-center text-sm text-muted-foreground">Invite friend with link shared</p>

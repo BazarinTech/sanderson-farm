@@ -41,7 +41,7 @@ function Page() {
   const router = useRouter()
   return (
     <div>
-      <Topbar title="Grover Profile" backBtn/>
+      <Topbar title="Grover Profile" />
       {/* Header with Profile */}
       <div className="bg-primary text-primary-foreground pt-4 pb-8 px-4">
         <h1 className="text-center font-semibold mb-6">Mine</h1>
