@@ -20,6 +20,7 @@ import {
   ArrowRight01Icon,
   CoinsSwapIcon,
   Gif01Icon,
+  Logout01Icon,
 } from "hugeicons-react"
 import Link from 'next/dist/client/link'
 import { useRouter } from 'next/navigation'
@@ -35,6 +36,7 @@ const menuItems = [
   { icon: LockPasswordIcon, label: "Reset Password", href: "/reset-password" },
   { icon: CustomerServiceIcon, label: "Customer Service", href: "#" },
   { icon: Download02Icon, label: "App Download", href: "#" },
+  { icon: Logout01Icon, label: "Logout", href: "/login" },
 ]
 
 function Page() {
