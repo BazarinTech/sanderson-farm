@@ -85,7 +85,8 @@ type Product = {
     description: string,
     tier: string
     riskLevel: number
-    limits: number
+    order_limit: number
+    image: string
 }
 
 type Transactions = {
