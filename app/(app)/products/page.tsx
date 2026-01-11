@@ -1,36 +1,38 @@
+'use client'
 import { ProductCard } from '@/components/products/product-card'
 import { BottomNav } from '@/components/shared/bottombar'
+import NoList from '@/components/shared/no-list'
 import Topbar from '@/components/shared/topbar'
-import React from 'react'
+import { useMainStore } from '@/lib/stores/use-main-store'
+import React, { use } from 'react'
 
-const products = [
-  {
-    name: "Antminer S1",
-    image: "/mixed-colorful-beans-in-wooden-bowl.png",
-    price: 800.0,
-    cycle: 30,
-    daily: 55.0,
-    limit: 1,
-  }
-]
 
 function Page() {
+  const mainDetails = useMainStore((state) => state.mainDetails)
   return (
     <div>
       <Topbar title="Grover Products" />
 
       <main className="max-w-md mx-auto px-4 py-4 space-y-4 mb-20">
-        {products.map((product) => (
+        {mainDetails?.products.map((product) => (
           <ProductCard
             key={product.name}
             name={product.name}
             image={product.image}
-            price={product.price}
-            cycle={product.cycle}
-            daily={product.daily}
-            limit={product.limit}
+            max={product.max}
+            duration={product.duration}
+            returns={product.returns}
+            order_limit={product.order_limit}
+            ID={product.ID}
+            tier={product.tier}
+            description={product.description}
+            status={product.status}
+
           />
         ))}
+        {mainDetails?.products.length === 0 && (
+          <NoList title='No products found' description='Please reach our customer support for help'/>
+        )}
       </main>
 
       <BottomNav />

@@ -79,15 +79,13 @@ type Product = {
     ID: ID,
     name: string,
     returns: number,
-    min: number,
     max: number,
     status: string,
     duration: number,
     description: string,
     tier: string
-    riskLevel: number
     order_limit: number
-    image: string
+    image: string,
 }
 
 type Transactions = {

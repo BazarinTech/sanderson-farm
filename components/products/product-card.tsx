@@ -2,17 +2,10 @@
 
 import Image from "next/image"
 import { ArrowRight01Icon } from "hugeicons-react"
+import { useCurrency } from "@/lib/hooks/use-currency"
 
-interface ProductCardProps {
-  name: string
-  image: string
-  price: number
-  cycle: number
-  daily: number
-  limit: number
-}
 
-export function ProductCard({ name, image, price, cycle, daily, limit }: ProductCardProps) {
+export function ProductCard({ name, image, max, duration, returns, order_limit }: Product) {
   return (
     <div className="bg-card rounded-xl p-4 shadow-sm border border-border w-full">
       {/* Product Name */}
@@ -35,15 +28,15 @@ export function ProductCard({ name, image, price, cycle, daily, limit }: Product
         <div className="flex-1 flex flex-col justify-center">
           <div className="flex justify-between items-center mb-1">
             <span className="text-sm text-muted-foreground">Price :</span>
-            <span className="text-sm font-bold text-primary">KSH{price.toFixed(2)}</span>
+            <span className="text-sm font-bold text-primary">{useCurrency(max)}</span>
           </div>
           <div className="flex justify-between items-center mb-1">
             <span className="text-sm text-muted-foreground">Cycle :</span>
-            <span className="text-sm font-medium text-foreground italic">{cycle} Day</span>
+            <span className="text-sm font-medium text-foreground italic">{duration} Day</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">Daily :</span>
-            <span className="text-sm font-bold text-primary">KSH{daily.toFixed(2)}</span>
+            <span className="text-sm font-bold text-primary">{useCurrency(returns)}</span>
           </div>
         </div>
       </div>
@@ -58,7 +51,7 @@ export function ProductCard({ name, image, price, cycle, daily, limit }: Product
           <div className="flex-1 h-8 bg-muted-foreground/60 rounded-full overflow-hidden relative">
             <div className="h-full bg-muted-foreground/80 rounded-full" style={{ width: `${100}%` }} />
             <span className="absolute inset-0 flex items-center justify-center text-xs font-medium text-primary-foreground">
-             Limit {limit}
+             Limit {order_limit}
             </span>
           </div>
         </div>
