@@ -1,14 +1,20 @@
-
+'use client'
 import { EventsSection } from '@/components/home/events-sections'
 import { NotificationTicker } from '@/components/home/notification-ticker'
 import { QuickActions } from '@/components/home/quick-actions'
 import { VideoHero } from '@/components/home/video-hero'
 import { BottomNav } from '@/components/shared/bottombar'
 import Topbar from '@/components/shared/topbar'
-import React from 'react'
+import { useMainStore } from '@/lib/stores/use-main-store'
+import React, { useEffect } from 'react'
 
 
 function Page() {
+  const loginState = useMainStore((state) => state.loginState)
+  useEffect(() => {
+    loginState()
+  }, [loginState])
+
   return (
     <div>
 

@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 function TeamTable({
   members,
 }: {
-  members: { account: string; referrer: string; depositStatus: string }[]
+  members: TeamUser[]
 }) {
   return (
     <div className="rounded-lg border">
@@ -19,19 +19,19 @@ function TeamTable({
           {members.length > 0 ? (
             members.map((member, index) => (
               <TableRow key={index}>
-                <TableCell className="text-xs font-medium">{member.account}</TableCell>
-                <TableCell className="text-xs">{member.referrer}</TableCell>
+                <TableCell className="text-xs font-medium">{member.phone}</TableCell>
+                <TableCell className="text-xs">{member.refer}</TableCell>
                 <TableCell className="text-right">
                   <span
                     className={`inline-block rounded-full px-2 py-0.5 text-xs ${
-                      member.depositStatus === "Active"
+                      member.status === "Active"
                         ? "bg-accent/20 text-accent"
-                        : member.depositStatus === "Pending"
+                        : member.status === "Pending"
                           ? "bg-yellow-100 text-yellow-700"
                           : "bg-muted text-muted-foreground"
                     }`}
                   >
-                    {member.depositStatus}
+                    {member.status}
                   </span>
                 </TableCell>
               </TableRow>

@@ -46,6 +46,7 @@ type Wallet = {
     status: string
     total_invested: Amount
     withdrawal_pin: string
+    level: string
 }
 type InvestmentOrder = {
     ID: ID,
@@ -107,6 +108,7 @@ type TeamUser = User & {
     commission: Amount
     downlines: number
     level: string
+    refer: string
 }
 
 type Incentives = {

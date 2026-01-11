@@ -6,6 +6,8 @@ import { BottomNav } from '@/components/shared/bottombar'
 import Topbar from '@/components/shared/topbar'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { useCurrency } from '@/lib/hooks/use-currency'
+import { useMainStore } from '@/lib/stores/use-main-store'
 import { Logout } from '@hugeicons/core-free-icons'
 import {
   Wallet01Icon,
@@ -26,7 +28,7 @@ import {
 } from "hugeicons-react"
 import Link from 'next/dist/client/link'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const menuItems = [
   { icon: InformationCircleIcon, label: "Withdraw Account", href: "/cashout-wallet" },
@@ -44,6 +46,12 @@ const menuItems = [
 function Page() {
   const router = useRouter()
   const [islogoutAlertOpen, setIslogoutAlertOpen] = useState(false)
+  const loginState = useMainStore((state) => state.loginState)
+  const mainDetails = useMainStore((state) => state.mainDetails)
+
+  useEffect(() => {
+    loginState()
+  }, [loginState])
 
   const handleLogoutClick = () => {
     setIslogoutAlertOpen(true)
@@ -63,10 +71,10 @@ function Page() {
           </div>
           <div className="bg-primary-foreground/20 px-3 py-0.5 rounded-full text-sm flex items-center gap-1 mb-2">
             <span className="text-xs">▼</span>
-            <span>lv1</span>
+            <span>{mainDetails?.wallet.level}</span>
           </div>
-          <p className="font-semibold">ID : 949</p>
-          <p className="text-primary-foreground/80 text-sm">769172724</p>
+          <p className="font-semibold">ID : {mainDetails?.user.ID}</p>
+          <p className="text-primary-foreground/80 text-sm">{mainDetails?.user.phone}</p>
         </div>
       </div>
 
@@ -75,7 +83,7 @@ function Page() {
         <div className="grid grid-cols-2 gap-3 mb-4">
           <Card className="p-4 bg-card">
             <div className="text-center mb-3">
-              <p className="text-lg font-bold text-foreground">KSH0.00</p>
+              <p className="text-lg font-bold text-foreground">{useCurrency(mainDetails?.wallet.income ?? 0)}</p>
               <p className="text-xs text-muted-foreground">Today&apos;s Product Income</p>
             </div>
             <Button
@@ -90,7 +98,7 @@ function Page() {
 
           <Card className="p-4 bg-card">
             <div className="text-center mb-3">
-              <p className="text-lg font-bold text-foreground">0</p>
+              <p className="text-lg font-bold text-foreground">{mainDetails?.referral.active_downlines}</p>
               <p className="text-xs text-muted-foreground">Active Team</p>
             </div>
             <Button className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => router.push('/team')}>

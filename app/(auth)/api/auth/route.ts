@@ -81,9 +81,7 @@ export async function POST(req: Request) {
     }
 
     // Backend success: sign token and return same response + token
-    const token = jwt.sign({ userID: results.userID }, jwtSecret, {
-      expiresIn: "7d",
-    })
+    const token = jwt.sign({ userID: results.userID }, jwtSecret)
 
     // Return backend response fields unchanged, add token
     const res = NextResponse.json(
@@ -95,7 +93,7 @@ export async function POST(req: Request) {
     res.cookies.set({
       name: "susyr7q3ycugfWDFF",
       value: token,
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       path: "/",

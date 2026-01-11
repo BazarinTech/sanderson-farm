@@ -2,39 +2,37 @@
 
 import { BottomNav } from '@/components/shared/bottombar'
 import Topbar from '@/components/shared/topbar'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CheckmarkCircle01Icon, Copy01Icon } from 'hugeicons-react'
 import TeamTable from '@/components/team/team-table'
 import { Button } from '@/components/ui/button'
+import { useMainStore } from '@/lib/stores/use-main-store'
+import { useInviteCode } from '@/lib/hooks/use-invite-code'
+import { useCurrency } from '@/lib/hooks/use-currency'
 
-const referralCode = "3G2HU3"
-const referralLink = `https://grover-worker.com/register?inviteCode=${referralCode}`
-
-// Mock team data
-const teamData = {
-  teamB: [
-    { account: "07****1234", referrer: "Direct", depositStatus: "Active" },
-    { account: "07****5678", referrer: "Direct", depositStatus: "Pending" },
-    { account: "07****9012", referrer: "Direct", depositStatus: "Active" },
-    { account: "07****3456", referrer: "Direct", depositStatus: "Inactive" },
-  ],
-  teamC: [
-    { account: "07****2345", referrer: "07****1234", depositStatus: "Active" },
-    { account: "07****6789", referrer: "07****5678", depositStatus: "Active" },
-  ],
-  teamD: [{ account: "07****4567", referrer: "07****2345", depositStatus: "Pending" }],
-}
-
-const stats = {
-  teamSize: 7,
-  totalIncome: 2450.0,
-  monthlyRecharge: 1200.0,
-}
 
 
 function Page() {
   const [copied, setCopied] = useState(false)
+  const [referralCode, setReferralCode] = useState("")
+  const [referralLink, setReferralLink] = useState("")
+  const useInvite = useInviteCode()
+
+  const loginState = useMainStore((state) => state.loginState)
+  const mainDetails = useMainStore((state) => state.mainDetails)
+
+  useEffect(() => {
+    loginState()
+  }, [loginState])
+
+  useEffect(() => {
+    if (mainDetails) {
+      const inviteCode = useInvite.generate(mainDetails.user.ID)
+      setReferralCode(inviteCode)
+      setReferralLink(`${window.location.origin}/register?ref=${inviteCode}`)
+    }
+  }, [mainDetails])
 
   const handleCopy = async () => {
     try {
@@ -71,16 +69,16 @@ function Page() {
       {/* Stats Section */}
       <div className="mx-4 mt-6 flex justify-between text-center">
         <div className="flex-1">
-          <p className="text-xl font-bold text-foreground">{stats.teamSize}</p>
+          <p className="text-xl font-bold text-foreground">{mainDetails?.referral.total_downlines}</p>
           <p className="text-xs text-muted-foreground">Team Size</p>
         </div>
         <div className="flex-1">
-          <p className="text-xl font-bold text-primary">1</p>
+          <p className="text-xl font-bold text-primary">{mainDetails?.referral.active_downlines}</p>
           <p className="text-xs text-muted-foreground">Total Active</p>
         </div>
       </div>
       <div className="mx-4 mt-4 text-center">
-        <p className="text-xl font-bold text-foreground">KSH{stats.monthlyRecharge.toFixed(2)}</p>
+        <p className="text-xl font-bold text-foreground">{useCurrency(mainDetails?.wallet.invite_income ?? 0)}</p>
         <p className="text-xs text-muted-foreground">Invite Income</p>
       </div>
 
@@ -116,13 +114,13 @@ function Page() {
           </TabsList>
 
           <TabsContent value="teamB" className="mt-4">
-            <TeamTable members={teamData.teamB} />
+            <TeamTable members={mainDetails?.referral.level1 ?? []} />
           </TabsContent>
           <TabsContent value="teamC" className="mt-4">
-            <TeamTable members={teamData.teamC} />
+            <TeamTable members={mainDetails?.referral.level2 ?? []} />
           </TabsContent>
           <TabsContent value="teamD" className="mt-4">
-            <TeamTable members={teamData.teamD} />
+            <TeamTable members={mainDetails?.referral.level3 ?? []} />
           </TabsContent>
         </Tabs>
       </div>
