@@ -11,6 +11,8 @@ import { Label } from "@/components/ui/label"
 import { PasswordInput } from "@/components/auth/password-input"
 import { SmartPhone01Icon, Mail01Icon, LockPasswordIcon, CheckmarkCircle01Icon } from "hugeicons-react"
 import { VerificationCodeInput } from "@/components/auth/verification-input"
+import { requestVerificationCode, resetPassword, verifyCode } from "@/lib/backend/actions"
+import { toast } from "sonner"
 
 type Step = "phone" | "verify" | "reset" | "success"
 
@@ -24,6 +26,7 @@ export default function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [countdown, setCountdown] = useState(0)
+  const [isVerified, setIsVerified] = useState(false)
 
   const startCountdown = () => {
     setCountdown(60)
@@ -39,34 +42,58 @@ export default function ForgotPasswordPage() {
   }
 
   const handleRequestCode = async () => {
-    setError("")
-
-    if (!/^0\d{9}$/.test(phone) && !/^254\d{9}$/.test(phone)) {
-      setError("Please enter a valid phone number")
-      return
+      setError("")
+  
+      if (!/^0\d{9}$/.test(phone) && !/^254\d{9}$/.test(phone)) {
+        setError("Please enter a valid phone number")
+        return
+      }
+  
+      setIsLoading(true)
+      try {
+        const response = await requestVerificationCode({phone})
+        if (response.status == 'Success') {
+          toast.success("Verification code sent successfully")
+          setStep("verify")
+        } else {
+          setError(response.message || "Failed to send verification code")
+        }
+      } catch (error) {
+        console.error(error)
+        toast.error("An error occurred while sending the verification code.")
+      }finally {  
+        setIsLoading(false)
+  
+        startCountdown()
+      }
     }
-
-    setIsLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsLoading(false)
-
-    startCountdown()
-    setStep("verify")
-  }
-
-  const handleVerifyCode = async () => {
-    setError("")
-
-    if (verificationCode.length !== 6) {
-      setError("Please enter the 6-digit verification code")
-      return
+  
+    const handleVerifyCode = async () => {
+      setError("")
+  
+      if (verificationCode.length !== 6) {
+        setError("Please enter the 6-digit verification code")
+        return
+      }
+  
+      setIsLoading(true)
+      try {
+        const response = await verifyCode({phone, code: verificationCode})
+        if (response.status == 'Success') {
+          toast.success("Phone number verified successfully")
+          setIsVerified(true)
+          setStep("reset")
+        } else {
+          setError(response.message || "Invalid verification code")
+        }
+      } catch (error) {
+        console.error(error)
+        toast.error("An error occurred during verification.")
+      }finally {
+      setIsLoading(false)
+      }
+      
     }
-
-    setIsLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setIsLoading(false)
-    setStep("reset")
-  }
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -87,10 +114,26 @@ export default function ForgotPasswordPage() {
       return
     }
 
+    if (!isVerified) {
+      setError("Please verify your phone number first")
+      return
+    }
+
     setIsLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsLoading(false)
-    setStep("success")
+    try {
+      const response = await resetPassword({phone, code: verificationCode, newPassword})
+      if (response.status == 'Success') {
+        toast.success("Password reset successfully")
+        setStep("success")
+      } else {
+        setError(response.message || "Failed to reset password")
+      }
+    } catch (error) {
+      toast.error("An error occurred while resetting the password.")
+      console.error(error)
+    }finally {
+      setIsLoading(false)
+    }
   }
 
   return (

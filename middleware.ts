@@ -77,6 +77,7 @@ export const config = {
     "/work/:path*",
     "/login",
     "/register",
+    "/forgot-password",
   ],
 }
 
