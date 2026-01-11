@@ -10,6 +10,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PasswordInput } from "@/components/auth/password-input"
 import { SmartPhone01Icon, LockPasswordIcon } from "hugeicons-react"
+import { auth } from "@/lib/backend/auth"
+import { useMainStore } from "@/lib/stores/use-main-store"
+import { toast } from "sonner"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -34,11 +37,23 @@ export default function LoginPage() {
 
     setIsLoading(true)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    setIsLoading(false)
-    router.push("/home")
+    try {
+      // Simulate API call
+      const response = await auth({email: phone, password, type: 'login'})
+      if (response.status !== "Success") {
+        setError(response.message || "Login failed")
+        return
+      }
+      toast.success(response.message || "Login successful")
+      const loginState = useMainStore.getState().loginState
+      loginState()
+      router.push("/home")
+    } catch (error) {
+      console.error("Login error:", error)
+      setError("An error occurred during login. Please try again.")
+    }finally {
+      setIsLoading(false)
+    }
   }
 
   return (
