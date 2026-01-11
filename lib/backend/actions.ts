@@ -123,7 +123,7 @@ export async function verifyCode({phone, code} : VerificationRequest): Promise<G
 }
 
 export async function resetPassword({phone, code, newPassword} : ForgotPasswordRequest): Promise<GeneralResponse> {
-    const response = await fetch(`${backendUrl}/reset-password.php`, {
+    const response = await fetch(`${backendUrl}/forgot-password.php`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({phone, code, newPassword})
