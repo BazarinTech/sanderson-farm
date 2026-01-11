@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,6 +11,11 @@ import { Label } from "@/components/ui/label"
 import { PasswordInput } from "@/components/auth/password-input"
 import { SmartPhone01Icon, UserIcon, Mail01Icon, ArrowLeft01Icon } from "hugeicons-react"
 import { VerificationCodeInput } from "@/components/auth/verification-input"
+import { toast } from "sonner"
+import { requestVerificationCode, verifyCode } from "@/lib/backend/actions"
+import { auth } from "@/lib/backend/auth"
+import { useInviteCode } from "@/lib/hooks/use-invite-code"
+import { useMainStore } from "@/lib/stores/use-main-store"
 
 type Step = "phone" | "verify" | "details"
 
@@ -26,6 +31,10 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [countdown, setCountdown] = useState(0)
+  const [isVerified, setIsVerified] = useState(false)
+  const searchParams = useSearchParams();
+  const upline = searchParams.get("inviteCode");
+  const { decode } = useInviteCode()
 
   const startCountdown = () => {
     setCountdown(60)
@@ -49,11 +58,22 @@ export default function RegisterPage() {
     }
 
     setIsLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsLoading(false)
+    try {
+      const response = await requestVerificationCode({phone})
+      if (response.status == 'Success') {
+        toast.success("Verification code sent successfully")
+        setStep("verify")
+      } else {
+        setError(response.message || "Failed to send verification code")
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error("An error occurred while sending the verification code.")
+    }finally {  
+      setIsLoading(false)
 
-    startCountdown()
-    setStep("verify")
+      startCountdown()
+    }
   }
 
   const handleVerifyCode = async () => {
@@ -65,11 +85,22 @@ export default function RegisterPage() {
     }
 
     setIsLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    try {
+      const response = await verifyCode({phone, code: verificationCode})
+      if (response.status == 'Success') {
+        toast.success("Phone number verified successfully")
+        setIsVerified(true)
+        setStep("details")
+      } else {
+        setError(response.message || "Invalid verification code")
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error("An error occurred during verification.")
+    }finally {
     setIsLoading(false)
-
-    // Simulate verification (accept any 6-digit code for demo)
-    setStep("details")
+    }
+    
   }
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -91,11 +122,29 @@ export default function RegisterPage() {
       return
     }
 
-    setIsLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsLoading(false)
+    if(!isVerified) {
+      setError("Please verify your phone number first")
+      setStep("phone")
+      return
+    }
 
-    router.push("/login")
+    setIsLoading(true)
+    try {
+      const response = await auth({email, password, confirmPassword, phone, name: fullName, type: 'register', upline: String(decode(upline || "")) || ""})
+      if (response.status == 'Success') {
+        const loginState = useMainStore.getState().loginState
+        loginState()
+        toast.success(response.message || "Registration successful")
+        router.push("/home")
+      } else {
+        setError(response.message || "Registration failed")
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error("An error occurred during registration.")
+    }finally {
+      setIsLoading(false)
+    }
   }
 
   const handleBack = () => {

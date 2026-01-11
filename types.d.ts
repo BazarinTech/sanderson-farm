@@ -180,7 +180,6 @@ type WithdrawFunds = Transact & {
 
 type VerificationRequest = {
     phone: string
-    type: string
     code?: string
 }
 
