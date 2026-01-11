@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   description: "Together defining future of digital leverage",
 };
 
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
