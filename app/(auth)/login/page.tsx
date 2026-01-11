@@ -39,7 +39,7 @@ export default function LoginPage() {
 
     try {
       // Simulate API call
-      const response = await auth({email: phone, password, type: 'login'})
+      const response = await auth({phone, password, type: 'login'})
       if (response.status !== "Success") {
         setError(response.message || "Login failed")
         return

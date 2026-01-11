@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     body?.type === "login"
       ? {
           type: "login",
-          email: body.email,
+          phone: body.phone,
           password: body.password,
         }
       : body?.type === "register"

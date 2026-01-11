@@ -3,11 +3,11 @@ type ID = number
 type Amount = string
 
 type Auth = {
-    email: string
+    email?: string
     type: 'login' | 'register'
     password: string
     confirmPassword?:string
-    phone?:string
+    phone:string
     upline?:string
     username?:string
     name?:name
