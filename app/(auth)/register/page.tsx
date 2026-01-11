@@ -19,6 +19,10 @@ import { useMainStore } from "@/lib/stores/use-main-store"
 
 type Step = "phone" | "verify" | "details"
 
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
+
 export default function RegisterPage() {
   const router = useRouter()
   const [step, setStep] = useState<Step>("phone")
