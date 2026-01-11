@@ -14,10 +14,6 @@ import { auth } from "@/lib/backend/auth"
 import { useMainStore } from "@/lib/stores/use-main-store"
 import { toast } from "sonner"
 
-export const dynamic = "force-dynamic"
-export const revalidate = 0
-
-
 export default function LoginPage() {
   const router = useRouter()
   const [phone, setPhone] = useState("")
