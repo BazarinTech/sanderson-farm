@@ -1,10 +1,12 @@
 'use client'
 
+import LogoutAlert from '@/components/alerts/logout-alert'
 import WalletCard from '@/components/mine/wallet-card'
 import { BottomNav } from '@/components/shared/bottombar'
 import Topbar from '@/components/shared/topbar'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { Logout } from '@hugeicons/core-free-icons'
 import {
   Wallet01Icon,
   Download01Icon,
@@ -24,7 +26,7 @@ import {
 } from "hugeicons-react"
 import Link from 'next/dist/client/link'
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 
 const menuItems = [
   { icon: InformationCircleIcon, label: "Withdraw Account", href: "/cashout-wallet" },
@@ -41,6 +43,12 @@ const menuItems = [
 
 function Page() {
   const router = useRouter()
+  const [islogoutAlertOpen, setIslogoutAlertOpen] = useState(false)
+
+  const handleLogoutClick = () => {
+    setIslogoutAlertOpen(true)
+  }
+
   return (
     <div>
       <Topbar title="Grover Profile" />
@@ -113,22 +121,46 @@ function Page() {
 
           {/* Menu Items */}
           <div className="space-y-1 mb-20">
-            {menuItems.map((item, index) => (
-              <Link
-                key={index}
-                href={item.href}
-                className="flex items-center justify-between py-4 px-2 hover:bg-muted/50 rounded-lg transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <item.icon size={22} className="text-primary" />
-                  <span className="text-foreground">{item.label}</span>
-                </div>
-                <ArrowRight01Icon size={18} className="text-muted-foreground" />
-              </Link>
-            ))}
+            {menuItems.map((item, index) => {
+              const isLogout = item.label.toLowerCase() === "logout" // or item.href === "/login"
+
+              const RowContent = (
+                <>
+                  <div className="flex items-center gap-3">
+                    <item.icon size={22} className="text-primary" />
+                    <span className="text-foreground">{item.label}</span>
+                  </div>
+                  <ArrowRight01Icon size={18} className="text-muted-foreground" />
+                </>
+              )
+
+              if (isLogout) {
+                return (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={handleLogoutClick}
+                    className="w-full flex items-center justify-between py-4 px-2 hover:bg-muted/50 rounded-lg transition-colors text-left"
+                  >
+                    {RowContent}
+                  </button>
+                )
+              }
+
+              return (
+                <Link
+                  key={index}
+                  href={item.href}
+                  className="flex items-center justify-between py-4 px-2 hover:bg-muted/50 rounded-lg transition-colors"
+                >
+                  {RowContent}
+                </Link>
+              )
+            })}
           </div>
        </div>
       <BottomNav />
+      <LogoutAlert isOpen={islogoutAlertOpen} onClose={() => setIslogoutAlertOpen(false)} />
     </div>
   )
 }

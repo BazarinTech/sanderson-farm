@@ -109,7 +109,7 @@ export async function POST(req: Request) {
       {
         status: "Failed",
         message: "An error occurred while authenticating",
-        error: [],
+        error: String(error),
       },
       { status: 200 }
     )
