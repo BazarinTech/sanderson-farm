@@ -9,11 +9,11 @@ import { PromotionDialog } from "./promotion-dialog"
 interface OrderCardProps {
   name: string
   image: string
-  cycle: string
+  cycle: number
   total: string
   purchaseDate: string
-  status: "valid" | "expired",
-  daily: string
+  status: string,
+  daily: number
 }
 
 export function OrderCard({ name, image, cycle, total, purchaseDate, status, daily }: OrderCardProps) {

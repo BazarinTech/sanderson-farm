@@ -4,54 +4,22 @@ import { OrderCard } from '@/components/products/order-card'
 import { BottomNav } from '@/components/shared/bottombar'
 import Topbar from '@/components/shared/topbar'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
-const orders = [
-  {
-    id: 1,
-    name: "AS1",
-    image: "/mixed-colorful-beans-in-wooden-bowl.jpg",
-    cycle: "30 Day",
-    total: "KSH160050.00",
-    purchaseDate: "2025-12-20 17:11",
-    status: "valid" as const,
-    daily: "KSH550.00",
-  },
-  {
-    id: 2,
-    name: "AS1",
-    image: "/mixed-colorful-beans-in-wooden-bowl.jpg",
-    cycle: "30 Day",
-    total: "KSH1650.00",
-    purchaseDate: "2025-12-24 15:26",
-    status: "valid" as const,
-    daily: "KSH550.00",
-  },
-  {
-    id: 3,
-    name: "Antminer S2",
-    image: "/red-kidney-beans-in-wooden-bowl-with-scoop.jpg",
-    cycle: "42 Day",
-    total: "KSH2700.00",
-    purchaseDate: "2025-12-15 10:30",
-    status: "expired" as const,
-    daily: "KSH550.00",
-  },
-  {
-    id: 4,
-    name: "AS1",
-    image: "/mixed-colorful-beans-in-wooden-bowl.jpg",
-    cycle: "30 Day",
-    total: "KSH160050.00",
-    purchaseDate: "2025-11-20 09:45",
-    status: "expired" as const,
-    daily: "KSH550.00",
-  },
-]
+import { useMainStore } from '@/lib/stores/use-main-store'
+import { useEffect, useState } from 'react'
 
 function Page() {
+  const mainDetails = useMainStore((state) => state.mainDetails)
+  const [validOrders, setValidOrders] = useState<InvestmentOrder[]>([]);
+  const [expiredOrders, setExpiredOrders] = useState<InvestmentOrder[]>([]);
 
-  const validOrders = orders.filter((order) => order.status === "valid")
-  const expiredOrders = orders.filter((order) => order.status === "expired")
+  useEffect(() => {
+    if (mainDetails) {
+      const valid = mainDetails.user_investments.filter((order) => order.status === 'valid');
+      const expired = mainDetails.user_investments.filter((order) => order.status === 'expired');
+      setValidOrders(valid);
+      setExpiredOrders(expired);
+    }
+  }, [mainDetails]);
   return (
     <div>
       <Topbar title="Grover Tasks"/>
@@ -79,14 +47,14 @@ function Page() {
               {validOrders.length > 0 ? (
                 validOrders.map((order) => (
                   <OrderCard
-                    key={order.id}
-                    name={order.name}
+                    key={order.ID}
+                    name={order.product_name}
                     image={order.image}
-                    cycle={order.cycle}
-                    total={order.total}
-                    purchaseDate={order.purchaseDate}
+                    cycle={order.duration}
+                    total={order.total_returns}
+                    purchaseDate={order.investment_date}
                     status={order.status}
-                    daily={order.daily}
+                    daily={order.return_rate}
                   />
                 ))
               ) : (
@@ -101,14 +69,14 @@ function Page() {
               {expiredOrders.length > 0 ? (
                 expiredOrders.map((order) => (
                   <OrderCard
-                    key={order.id}
-                    name={order.name}
+                    key={order.ID}
+                    name={order.product_name}
                     image={order.image}
-                    cycle={order.cycle}
-                    total={order.total}
-                    purchaseDate={order.purchaseDate}
+                    cycle={order.duration}
+                    total={order.total_returns}
+                    purchaseDate={order.investment_date}
                     status={order.status}
-                    daily={order.daily}
+                    daily={order.return_rate}
                   />
                 ))
               ) : (
