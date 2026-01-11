@@ -59,7 +59,8 @@ type InvestmentOrder = {
     total_returns: Amount,
     return_rate: number,
     remaining: number
-    product_description:string
+    product_description:string,
+    image: string,
 }
 
 type Bonus = {
