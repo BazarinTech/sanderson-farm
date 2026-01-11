@@ -46,7 +46,7 @@ export function middleware(req: NextRequest) {
       try {
         jwtDecode(token);
         // Already logged in → redirect to dashboard
-        return NextResponse.redirect(new URL("/dashboard", req.url));
+        return NextResponse.redirect(new URL("/home", req.url));
       } catch {
         // Invalid token → clear it and continue to auth page
         const res = NextResponse.next();
@@ -62,18 +62,21 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-  "/bonus/:path*",
-  "/cashout/:path*",
-  "/cashout-wallet/:path*",
-  "/company/:path*",
-  "/home/:path*",
-  "/incentive/:path*",
-  "/mine/:path*",
-  "/products/:path*",
-  "/recharge/:path*",
-  "/records/:path*",
-  "/reset-password/:path*",
-  "/team/:path*",
-  "/work/:path*",
-],
-};
+    "/bonus/:path*",
+    "/cashout/:path*",
+    "/cashout-wallet/:path*",
+    "/company/:path*",
+    "/home/:path*",
+    "/incentive/:path*",
+    "/mine/:path*",
+    "/products/:path*",
+    "/recharge/:path*",
+    "/records/:path*",
+    "/reset-password/:path*",
+    "/team/:path*",
+    "/work/:path*",
+    "/login",
+    "/register",
+  ],
+}
+

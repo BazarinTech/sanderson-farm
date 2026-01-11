@@ -248,7 +248,8 @@ export default function RegisterPage() {
                 <button
                   onClick={() => {
                     startCountdown()
-                    // Resend code logic
+                    handleRequestCode()
+                    setVerificationCode("")
                   }}
                   className="text-primary text-sm hover:underline"
                 >
