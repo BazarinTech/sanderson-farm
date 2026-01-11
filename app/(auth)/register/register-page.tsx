@@ -137,7 +137,7 @@ export default function RegisterPage() {
         toast.success(response.message || "Registration successful")
         router.push("/home")
       } else {
-        setError(response.message || "Registration failed")
+        toast.error(response.message || "Registration failed")
       }
     } catch (error) {
       console.error(error)
