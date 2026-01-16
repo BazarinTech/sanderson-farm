@@ -1,45 +1,68 @@
 "use client"
 
 import Image from "next/image"
-import { ArrowRight01Icon } from "hugeicons-react"
+import { ArrowRight01Icon, Loading01Icon } from "hugeicons-react"
 import { useCurrency } from "@/lib/hooks/use-currency"
+import { useState } from "react";
+import { toast } from "sonner";
+import { makeInvestment } from "@/lib/backend/actions";
+import { useMainStore } from "@/lib/stores/use-main-store";
 
 
-export function ProductCard({ name, image, max, duration, returns, order_limit }: Product) {
+export function ProductCard({ID, name, image, max, duration, returns, order_limit }: Product) {
+  const token = useMainStore((state) => state.token);
+  const [isLoading, setLoading] = useState(false);
   const src = image
   ? `https://grover.xgramm.com/admin/uploads/${image}`
   : "/placeholder.svg";
+
+  const handleBuyProduct = async () => {
+    setLoading(true);
+    try {
+      const response = await makeInvestment({userID: token, prodID: ID, amount: String(max)});
+      if(response.status === "Success") {
+        toast.success(response.message || "Product purchased successfully!");
+      } else {
+        toast.error(response.message || "Failed to buy product. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error buying product:", error);
+      toast.error("Failed to buy product. Please try again.");
+    }finally {
+      setLoading(false);
+    }
+  };
   return (
-    <div className="bg-card rounded-xl p-4 shadow-sm border border-border w-full">
+    <div className="bg-card rounded-xl p-4 shadow-sm border border-border w-full flex-col justify-center items-center">
       {/* Product Name */}
       <h3 className="text-lg font-semibold text-foreground mb-3">{name}</h3>
 
       {/* Product Info Row */}
-      <div className="flex gap-4 mb-4">
+      <div className="flex flex-col justify-center items-center w-full gap-4 mb-4">
         {/* Product Image */}
-        <div className="w-32 h-24 rounded-lg overflow-hidden shrink-0">
+        <div className="w-80 overflow-hidden shrink-0">
           <Image
             src={src}
             alt={name}
-            width={128}
-            height={96}
+            width={500}
+            height={500}
             className="w-full h-full object-cover"
             unoptimized={src.startsWith("https://grover.xgramm.com")}
           />
         </div>
 
         {/* Product Details */}
-        <div className="flex-1 flex flex-col justify-center">
+        <div className="flex-1 flex flex-col justify-center space-y-2 w-full">
           <div className="flex justify-between items-center mb-1">
             <span className="text-sm text-muted-foreground">Price :</span>
             <span className="text-sm font-bold text-primary">{useCurrency(max)}</span>
           </div>
           <div className="flex justify-between items-center mb-1">
             <span className="text-sm text-muted-foreground">Cycle :</span>
-            <span className="text-sm font-medium text-foreground italic">{duration} Day</span>
+            <span className="text-sm font-medium text-foreground">{duration} Day</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Daily :</span>
+            <span className="text-sm text-muted-foreground">Daily Income :</span>
             <span className="text-sm font-bold text-primary">{useCurrency(returns)}</span>
           </div>
         </div>
@@ -61,9 +84,9 @@ export function ProductCard({ name, image, max, duration, returns, order_limit }
         </div>
 
         {/* Buy Button */}
-        <button className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
-          Buy
-          <ArrowRight01Icon className="w-5 h-5" />
+        <button className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors" disabled={isLoading} onClick={handleBuyProduct}>
+        {isLoading ? <>Processing... <Loading01Icon className="w-5 h-5" /></> : <>Enroll <ArrowRight01Icon className="w-5 h-5" /></>}
+          
         </button>
       </div>
     </div>
