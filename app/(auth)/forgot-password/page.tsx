@@ -215,6 +215,7 @@ export default function ForgotPasswordPage() {
                 <button
                   onClick={() => {
                     startCountdown()
+                    handleRequestCode()
                   }}
                   className="text-primary text-sm hover:underline"
                 >
