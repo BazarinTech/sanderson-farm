@@ -6,6 +6,9 @@ import { useCurrency } from "@/lib/hooks/use-currency"
 
 
 export function ProductCard({ name, image, max, duration, returns, order_limit }: Product) {
+  const src = image
+  ? `https://grover.xgramm.com/admin/uploads/${image}`
+  : "/placeholder.svg";
   return (
     <div className="bg-card rounded-xl p-4 shadow-sm border border-border w-full">
       {/* Product Name */}
@@ -16,11 +19,12 @@ export function ProductCard({ name, image, max, duration, returns, order_limit }
         {/* Product Image */}
         <div className="w-32 h-24 rounded-lg overflow-hidden shrink-0">
           <Image
-            src={image || "/placeholder.svg"}
+            src={src}
             alt={name}
             width={128}
             height={96}
             className="w-full h-full object-cover"
+            unoptimized={src.startsWith("https://grover.xgramm.com")}
           />
         </div>
 
