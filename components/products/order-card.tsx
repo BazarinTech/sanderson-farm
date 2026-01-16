@@ -5,6 +5,7 @@ import Image from "next/image"
 import { Speaker01Icon } from "hugeicons-react"
 import { Button } from "@/components/ui/button"
 import { PromotionDialog } from "./promotion-dialog"
+import { useCurrency } from "@/lib/hooks/use-currency"
 
 interface OrderCardProps {
   name: string
@@ -18,6 +19,9 @@ interface OrderCardProps {
 
 export function OrderCard({ name, image, cycle, total, purchaseDate, status, daily }: OrderCardProps) {
   const [isPromoting, setIsPromoting] = useState(false)
+  const src = image
+  ? `https://grover.xgramm.com/admin/uploads/${image}`
+  : "/placeholder.svg";
 
   return (
     <>
@@ -26,9 +30,9 @@ export function OrderCard({ name, image, cycle, total, purchaseDate, status, dai
 
         <div className="flex gap-4">
           {/* Product Image */}
-          <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg">
-            <Image src={image || "/placeholder.svg"} alt={name} fill className="object-cover" />
-            {status === "expired" && (
+          <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg" >
+            <Image src={src} alt={name} fill className="object-cover" unoptimized={src.startsWith("https://grover.xgramm.com")}/>
+            {status === "Expired" && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/40">
                 <span className="rotate-[-15deg] rounded bg-destructive px-2 py-0.5 text-xs font-bold text-white">
                   EXPIRED
@@ -41,8 +45,8 @@ export function OrderCard({ name, image, cycle, total, purchaseDate, status, dai
           <div className="flex flex-1 flex-col justify-center space-y-1">
             
             <div className="flex justify-between">
-              <span className="text-sm text-muted-foreground">Daily:</span>
-              <span className="text-sm font-semibold text-primary">{daily}</span>
+              <span className="text-sm text-muted-foreground">Daily Income:</span>
+              <span className="text-sm font-semibold text-primary">{useCurrency(daily)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm text-muted-foreground">Cycle:</span>
@@ -50,19 +54,15 @@ export function OrderCard({ name, image, cycle, total, purchaseDate, status, dai
             </div>
             <div className="flex justify-between">
               <span className="text-sm text-muted-foreground">Total:</span>
-              <span className="text-sm font-semibold text-primary">{total}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-muted-foreground">Purchase:</span>
-              <span className="text-sm font-semibold text-black">{purchaseDate}</span>
+              <span className="text-sm font-semibold text-primary">{useCurrency(total)}</span>
             </div>
           </div>
         </div>
 
-        {status === "valid" && (
+        {status === "Active" && (
           <Button
             onClick={() => setIsPromoting(true)}
-            className="mt-4 w-full rounded-full bg-gradient-to-r from-primary to-accent py-6 font-semibold text-primary-foreground hover:opacity-90"
+            className="mt-4 w-full rounded-full  from-primary to-accent py-6 font-semibold text-primary-foreground hover:opacity-90"
             disabled={isPromoting}
           >
             <Speaker01Icon className="mr-2 h-5 w-5" />

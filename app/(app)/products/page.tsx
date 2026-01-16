@@ -4,11 +4,15 @@ import { BottomNav } from '@/components/shared/bottombar'
 import NoList from '@/components/shared/no-list'
 import Topbar from '@/components/shared/topbar'
 import { useMainStore } from '@/lib/stores/use-main-store'
-import React, { use } from 'react'
+import React, { useEffect } from 'react'
 
 
 function Page() {
   const mainDetails = useMainStore((state) => state.mainDetails)
+  const loginState = useMainStore((state) => state.loginState)
+    useEffect(() => {
+      loginState()
+    }, [loginState])
   return (
     <div>
       <Topbar title="Grover Products" />

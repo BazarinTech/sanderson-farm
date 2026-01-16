@@ -11,6 +11,7 @@ import { useMainStore } from "@/lib/stores/use-main-store";
 
 export function ProductCard({ID, name, image, max, duration, returns, order_limit }: Product) {
   const token = useMainStore((state) => state.token);
+  const fetchMainDetails = useMainStore((state) => state.fetchMainDetails);
   const [isLoading, setLoading] = useState(false);
   const src = image
   ? `https://grover.xgramm.com/admin/uploads/${image}`
@@ -22,6 +23,7 @@ export function ProductCard({ID, name, image, max, duration, returns, order_limi
       const response = await makeInvestment({userID: token, prodID: ID, amount: String(max)});
       if(response.status === "Success") {
         toast.success(response.message || "Product purchased successfully!");
+        fetchMainDetails(token);
       } else {
         toast.error(response.message || "Failed to buy product. Please try again.");
       }

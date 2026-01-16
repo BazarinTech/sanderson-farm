@@ -12,10 +12,15 @@ function Page() {
   const [validOrders, setValidOrders] = useState<InvestmentOrder[]>([]);
   const [expiredOrders, setExpiredOrders] = useState<InvestmentOrder[]>([]);
 
+  const loginState = useMainStore((state) => state.loginState)
+    useEffect(() => {
+      loginState()
+    }, [loginState])
+
   useEffect(() => {
     if (mainDetails) {
-      const valid = mainDetails.user_investments.filter((order) => order.status === 'valid');
-      const expired = mainDetails.user_investments.filter((order) => order.status === 'expired');
+      const valid = mainDetails.user_investments.filter((order) => order.status === 'Active');
+      const expired = mainDetails.user_investments.filter((order) => order.status === 'Expired');
       setValidOrders(valid);
       setExpiredOrders(expired);
     }
