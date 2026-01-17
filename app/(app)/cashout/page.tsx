@@ -240,7 +240,7 @@ export default function CashoutPage() {
               <div className="h-px bg-border my-2" />
               <div className="flex justify-between">
                 <span className="font-semibold">You&apos;ll Receive</span>
-                <span className="font-bold text-primary">{useCurrency(amount - (Number(amount) * fee / 100))}</span>
+                <span className="font-bold text-primary">{useCurrency(Number(amount) - (Number(amount) * fee / 100))}</span>
               </div>
             </div>
           </div>
