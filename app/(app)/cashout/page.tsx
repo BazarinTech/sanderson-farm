@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -24,6 +24,10 @@ import {
 import Link from "next/link"
 import Topbar from "@/components/shared/topbar"
 import { PasswordInput } from "@/components/auth/password-input"
+import { useMainStore } from "@/lib/stores/use-main-store"
+import { initiateWithdrawal } from "@/lib/backend/actions"
+import { toast } from "sonner"
+import { useCurrency } from "@/lib/hooks/use-currency"
 
 const PRESET_AMOUNTS = [500, 1000, 2000, 5000, 10000, 20000]
 
@@ -37,15 +41,34 @@ export default function CashoutPage() {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [showErrorDialog, setShowErrorDialog] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
+  const loginState = useMainStore((state) => state.loginState)
+  const mainDetails = useMainStore((state) => state.mainDetails)
+  const token = useMainStore((state) => state.token)
+  const [fee, setFee] = useState(0)
+  const [walletData, setWalletData] = useState({
+    balance: 0,
+    mpesaPhone: "",
+    accountName: "",
+    minWithdraw: 0,
+    maxWithdraw: 0,
+  })
 
-  // Mock wallet data
-  const walletData = {
-    balance: 15000,
-    mpesaPhone: "0712345678",
-    accountName: "John Doe",
-    minWithdraw: 100,
-    maxWithdraw: 50000,
-  }
+  useEffect(() => {
+        loginState()
+      }, [loginState])
+  
+  useEffect(() => {
+    if(mainDetails){
+      setWalletData({
+        balance: Number(mainDetails.wallet.balance),
+        mpesaPhone: mainDetails.wallet.withdrawal_account,
+        accountName: mainDetails.wallet.withdrawal_name,
+        minWithdraw: Number(mainDetails.controls.minWithdrawal),
+        maxWithdraw: 1000000,
+      })
+      setFee(mainDetails.controls.withFee)
+    }
+  }, [mainDetails])
 
   const handleAmountSelect = (value: number) => {
     setAmount(value.toString())
@@ -92,12 +115,8 @@ export default function CashoutPage() {
       return
     }
 
-    setIsLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsLoading(false)
-
     // Simulate PIN verification (accept "1234" as valid PIN)
-    if (pin !== "1234") {
+    if (pin !== mainDetails?.wallet.withdrawal_pin) {
       setShowPinDialog(false)
       setPin("")
       setErrorMessage("Invalid withdrawal PIN. Please try again.")
@@ -105,14 +124,37 @@ export default function CashoutPage() {
       return
     }
 
-    setShowPinDialog(false)
-    setPin("")
-    setShowSuccessDialog(true)
+    setIsLoading(true)
+    try {
+      const response = await initiateWithdrawal({
+        userID: token,
+        amount,
+        account: walletData.mpesaPhone,
+        method: "mpesa",
+        pin: pin,
+      })
+      if(response.status == 'Success'){
+        toast.success(response.message)
+        setShowSuccessDialog(true)
 
-    setTimeout(() => {
-      setShowSuccessDialog(false)
-      router.push("/records")
-    }, 3000)
+        setTimeout(() => {
+          setShowSuccessDialog(false)
+          router.push("/records?tab=withdraw")
+        }, 3000)
+      }else{
+        toast.error(response.message)
+      }
+    } catch (error) {
+      console.error("Withdrawal error:", error)
+      setErrorMessage("An error occurred while processing your withdrawal. Please try again.")
+      setShowErrorDialog(true)
+    }finally {
+      setIsLoading(false)
+      setShowPinDialog(false)
+      setPin("")
+    }
+
+    
   }
 
   return (
@@ -193,12 +235,12 @@ export default function CashoutPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Transaction Fee</span>
-                <span className="font-medium text-green-600">FREE</span>
+                <span className="font-medium text-green-600">{useCurrency(Number(amount) * fee / 100)}</span>
               </div>
               <div className="h-px bg-border my-2" />
               <div className="flex justify-between">
                 <span className="font-semibold">You&apos;ll Receive</span>
-                <span className="font-bold text-primary">KSH {Number.parseInt(amount).toLocaleString()}</span>
+                <span className="font-bold text-primary">{useCurrency(amount - (Number(amount) * fee / 100))}</span>
               </div>
             </div>
           </div>
@@ -217,8 +259,7 @@ export default function CashoutPage() {
         <div className="mt-6 flex items-start gap-3 p-4 bg-blue-50 rounded-xl">
           <InformationCircleIcon size={20} className="text-blue-600 shrink-0 mt-0.5" />
           <p className="text-sm text-blue-700">
-            Withdrawals are processed instantly to your registered M-Pesa number. For large amounts, processing may take
-            up to 24 hours.
+            Withdrawals are processed a maximum of 2 hours to your registered M-Pesa number. Fee charged is {mainDetails?.controls.withFee}% per transaction.
           </p>
         </div>
       </div>
