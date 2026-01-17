@@ -78,13 +78,18 @@ export function IncentiveTierCard({ tier, currentReferrals, onApply, hasApplied 
               <Clock01Icon size={18} className="mr-2" />
               Application Pending
             </Button>
-          ) : isEligible ? (
+          ) : isEligible && !tier.isClaimed  ? (
             <Button
               onClick={() => onApply(tier)}
               className="w-full rounded-xl py-5 bg-green-600 hover:bg-green-700 text-white"
             >
               <CheckmarkCircle02Icon size={18} className="mr-2" />
               Apply Now
+            </Button>
+          ) : tier.isClaimed ? (
+            <Button disabled className="w-full rounded-xl py-5 bg-green-100 text-green-800 hover:bg-green-100">
+              <CheckmarkCircle02Icon size={18} className="mr-2" />
+              Claimed
             </Button>
           ) : (
             <Button disabled className="w-full rounded-xl py-5 bg-gray-100 text-gray-400 hover:bg-gray-100">

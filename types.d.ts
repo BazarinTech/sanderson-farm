@@ -125,6 +125,7 @@ type Incentives = {
     level: string
     date: string
     bonusItem?: string
+    isClaimed: boolean
 }
 
 type Mains = {
