@@ -55,7 +55,7 @@ export function OrderCard({ name, image, cycle, total, roll, status, daily, orde
               <span className="text-sm font-semibold text-foreground">{cycle}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm text-muted-foreground">Total:</span>
+              <span className="text-sm text-muted-foreground">Earned so far:</span>
               <span className="text-sm font-semibold text-primary">{useCurrency(total)}</span>
             </div>
           </div>

@@ -2,6 +2,8 @@ type ID = number
 
 type Amount = string
 
+type TransactionStatus = "Pending" | "Completed" | "Failed" | "Success" | "Approved" | "Rejected"
+
 type Auth = {
     email?: string
     type: 'login' | 'register'
@@ -97,7 +99,7 @@ type Transactions = {
     name: string,
     amount: Amount,
     time: string,
-    status: string
+    status: TransactionStatus
     description: string
     fees: Amount
     trackingID: string

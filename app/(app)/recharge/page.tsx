@@ -43,7 +43,7 @@ export default function RechargePage() {
   const token = useMainStore((state) => state.token)
   const [trackingID, setTrackingID] = useState("")
 
-  const minDeposit = 10
+  const minDeposit = 1
   const maxDeposit = 150000
 
   const handleCheckStatus = async() => {
