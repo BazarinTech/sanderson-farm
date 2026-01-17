@@ -83,7 +83,7 @@ function Page() {
         <div className="grid grid-cols-2 gap-3 mb-4">
           <Card className="p-4 bg-card">
             <div className="text-center mb-3">
-              <p className="text-lg font-bold text-foreground">{useCurrency(mainDetails?.wallet.income ?? 0)}</p>
+              <p className="text-lg font-bold text-foreground">{useCurrency(mainDetails?.wallet.today_income ?? 0)}</p>
               <p className="text-xs text-muted-foreground">Today&apos;s Product Income</p>
             </div>
             <Button

@@ -47,6 +47,7 @@ type Wallet = {
     total_invested: Amount
     withdrawal_pin: string
     level: string
+    today_income: Amount
 }
 type InvestmentOrder = {
     ID: ID,

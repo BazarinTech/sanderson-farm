@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Rocket01Icon, SparklesIcon } from "hugeicons-react"
 import {
   AlertDialog,
@@ -22,56 +22,70 @@ interface PromotionDialogProps {
 }
 
 export function PromotionDialog({ isOpen, onComplete, productName, orderID }: PromotionDialogProps) {
-  const [progress, setProgress] = useState(0)
-  const fetchMainDetails = useMainStore((state) => state.fetchMainDetails);
-  const token = useMainStore((state) => state.token);
+ const [progress, setProgress] = useState(0)
+  const fetchMainDetails = useMainStore((s) => s.fetchMainDetails)
+  const token = useMainStore((s) => s.token)
 
-    const handleClaimIncome = async () => {
+  const didFinishRef = useRef(false)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleClaimIncome = useCallback(async () => {
     try {
-      const response = await claimEarnings({userID: token, orderID});
-      if(response.status === "Success") {
-        toast.success(response.message || "Income claimed successfully!");
-        
-      } else {
-        toast.error(response.message);
-      }
-    } catch (error) {
-      console.error("Error claiming income:", error);
-      toast.error("Failed to claim income. Please try again.");
-    }finally {
-      fetchMainDetails(token);
+      const response = await claimEarnings({ userID: token, orderID })
+      if (response.status === "Success") toast.success(response.message || "Income claimed successfully!")
+      else toast.error(response.message)
+    } catch (e) {
+      console.error("Error claiming income:", e)
+      toast.error("Failed to claim income. Please try again.")
+    } finally {
+      fetchMainDetails(token)
     }
-  }
+  }, [token, orderID, fetchMainDetails])
 
   useEffect(() => {
     if (!isOpen) {
       setProgress(0)
+      didFinishRef.current = false
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
       return
     }
 
-    const duration = 3000 // 3 seconds
-    const interval = 30 // Update every 30ms
+    // when opened, allow one finish
+    didFinishRef.current = false
+
+    const duration = 3000
+    const interval = 30
     const increment = (interval / duration) * 100
 
     const timer = setInterval(() => {
       setProgress((prev) => {
         const next = prev + increment
+
         if (next >= 100) {
           clearInterval(timer)
-          setTimeout(() => {
-            onComplete()
-            handleClaimIncome()
-          }, 200)
+
+          // Guard: finish only once per open
+          if (!didFinishRef.current) {
+            didFinishRef.current = true
+            timeoutRef.current = setTimeout(() => {
+              onComplete()
+              handleClaimIncome()
+            }, 200)
+          }
+
           return 100
         }
+
         return next
       })
     }, interval)
 
-    return () => clearInterval(timer)
-  }, [isOpen, onComplete])
-
-
+    return () => {
+      clearInterval(timer)
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    }
+  }, [isOpen, onComplete, handleClaimIncome])
+  
   return (
     <AlertDialog open={isOpen}>
       <AlertDialogContent className="max-w-sm rounded-2xl border-0 p-6 shadow-2xl [&>button]:hidden">
