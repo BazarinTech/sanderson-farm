@@ -97,19 +97,19 @@ function Page() {
               value="teamB"
               className="rounded-full text-primary-foreground data-[state=active]:bg-background data-[state=active]:text-foreground"
             >
-              Team B
+              Team A
             </TabsTrigger>
             <TabsTrigger
               value="teamC"
               className="rounded-full text-primary-foreground data-[state=active]:bg-background data-[state=active]:text-foreground"
             >
-              Team C
+              Team B
             </TabsTrigger>
             <TabsTrigger
               value="teamD"
               className="rounded-full text-primary-foreground data-[state=active]:bg-background data-[state=active]:text-foreground"
             >
-              Team D
+              Team C
             </TabsTrigger>
           </TabsList>
 

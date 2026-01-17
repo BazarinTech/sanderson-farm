@@ -106,7 +106,7 @@ export function PromotionDialog({ isOpen, onComplete, productName, orderID }: Pr
         <div className="mb-4">
           <Progress
             value={progress}
-            className="h-3 bg-muted [&>div]:bg-gradient-to-r [&>div]:from-primary [&>div]:to-accent"
+            className="h-3 bg-muted [&>div]:bg-linear-to-r [&>div]:from-primary [&>div]:to-accent"
           />
           <p className="mt-2 text-center text-sm font-medium text-primary">{Math.round(progress)}%</p>
         </div>
