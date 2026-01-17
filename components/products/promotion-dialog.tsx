@@ -10,15 +10,38 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Progress } from "@/components/ui/progress"
+import { toast } from "sonner"
+import { useMainStore } from "@/lib/stores/use-main-store"
+import { claimEarnings } from "@/lib/backend/actions"
 
 interface PromotionDialogProps {
   isOpen: boolean
   onComplete: () => void
   productName: string
+  orderID: ID
 }
 
-export function PromotionDialog({ isOpen, onComplete, productName }: PromotionDialogProps) {
+export function PromotionDialog({ isOpen, onComplete, productName, orderID }: PromotionDialogProps) {
   const [progress, setProgress] = useState(0)
+  const fetchMainDetails = useMainStore((state) => state.fetchMainDetails);
+  const token = useMainStore((state) => state.token);
+
+    const handleClaimIncome = async () => {
+    try {
+      const response = await claimEarnings({userID: token, orderID});
+      if(response.status === "Success") {
+        toast.success(response.message || "Income claimed successfully!");
+        
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      console.error("Error claiming income:", error);
+      toast.error("Failed to claim income. Please try again.");
+    }finally {
+      fetchMainDetails(token);
+    }
+  }
 
   useEffect(() => {
     if (!isOpen) {
@@ -37,6 +60,7 @@ export function PromotionDialog({ isOpen, onComplete, productName }: PromotionDi
           clearInterval(timer)
           setTimeout(() => {
             onComplete()
+            handleClaimIncome()
           }, 200)
           return 100
         }
@@ -46,6 +70,7 @@ export function PromotionDialog({ isOpen, onComplete, productName }: PromotionDi
 
     return () => clearInterval(timer)
   }, [isOpen, onComplete])
+
 
   return (
     <AlertDialog open={isOpen}>

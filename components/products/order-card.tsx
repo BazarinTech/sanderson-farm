@@ -15,9 +15,11 @@ interface OrderCardProps {
   purchaseDate: string
   status: string,
   daily: number
+  roll: number
+  orderID: ID
 }
 
-export function OrderCard({ name, image, cycle, total, purchaseDate, status, daily }: OrderCardProps) {
+export function OrderCard({ name, image, cycle, total, roll, status, daily, orderID }: OrderCardProps) {
   const [isPromoting, setIsPromoting] = useState(false)
   const src = image
   ? `https://grover.xgramm.com/admin/uploads/${image}`
@@ -63,15 +65,15 @@ export function OrderCard({ name, image, cycle, total, purchaseDate, status, dai
           <Button
             onClick={() => setIsPromoting(true)}
             className="mt-4 w-full rounded-full  from-primary to-accent py-6 font-semibold text-primary-foreground hover:opacity-90"
-            disabled={isPromoting}
+            disabled={isPromoting || roll == 0}
           >
             <Speaker01Icon className="mr-2 h-5 w-5" />
-            Promote
+            {roll == 0 ? "Please come back later" : `Promote`}
           </Button>
         )}
       </div>
 
-      <PromotionDialog isOpen={isPromoting} onComplete={() => setIsPromoting(false)} productName={name} />
+      <PromotionDialog isOpen={isPromoting} onComplete={() => setIsPromoting(false)} productName={name} orderID={orderID} />
     </>
   )
 }

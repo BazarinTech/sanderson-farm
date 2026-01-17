@@ -60,6 +60,8 @@ function Page() {
                     purchaseDate={order.investment_date}
                     status={order.status}
                     daily={order.return_rate}
+                    roll={order.roll}
+                    orderID={order.ID}
                   />
                 ))
               ) : (
@@ -82,6 +84,8 @@ function Page() {
                     purchaseDate={order.investment_date}
                     status={order.status}
                     daily={order.return_rate}
+                    roll={order.roll}
+                    orderID={order.ID}
                   />
                 ))
               ) : (

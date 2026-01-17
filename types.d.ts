@@ -61,6 +61,7 @@ type InvestmentOrder = {
     remaining: number
     product_description:string,
     image: string,
+    roll: number
 }
 
 type Bonus = {
