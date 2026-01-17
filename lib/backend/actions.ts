@@ -62,7 +62,7 @@ export async function updatePassword({userID, oldPassword, newPassword, confirmP
     return await response.json()
 }
 
-export async function initiateDeposit({userID, amount, account, method} : Transact): Promise<GeneralResponse> {
+export async function initiateDeposit({userID, amount, account, method} : Transact): Promise<DepositResponse> {
     const response = await fetch(`${backendUrl}/deposit.php`, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
@@ -163,6 +163,18 @@ export async function claimBonus({userID, bonusID} : claimBonus): Promise<Genera
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({userID, bonusID})
+    })
+    
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    
+    return await response.json()
+}
+
+export async function checkStkStatus({trackingID} : CheckSTKStatus): Promise<GeneralResponse> {
+    const response = await fetch(`${backendUrl}/stk-status.php`, {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({trackingID})
     })
     
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);

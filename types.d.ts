@@ -173,6 +173,10 @@ type Transact = {
     method: string
 }
 
+type DepositResponse = GeneralResponse & {
+    trackingID?: string
+}
+
 type TransferFunds = Transact & {
     recipient: string
 }
@@ -209,4 +213,8 @@ type ForgotPasswordRequest = {
 
 type claimBonus = CommonFetch & {
     bonusID: ID
+}
+
+type CheckSTKStatus = {
+    trackingID: string
 }

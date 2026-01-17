@@ -23,22 +23,49 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import Topbar from "@/components/shared/topbar"
+import { useMainStore } from "@/lib/stores/use-main-store"
+import { toast } from "sonner"
+import { checkStkStatus, initiateDeposit } from "@/lib/backend/actions"
 
-const PRESET_AMOUNTS = [500, 1000, 2000, 5000, 10000, 20000]
+const PRESET_AMOUNTS = [800, 1500, 2000, 5000, 10000, 20000]
 
 export default function RechargePage() {
   const router = useRouter()
   const [amount, setAmount] = useState("")
-  const [mpesaPhone, setMpesaPhone] = useState("0712345678")
+  const [mpesaPhone, setMpesaPhone] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [showStkDialog, setShowStkDialog] = useState(false)
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [stkProgress, setStkProgress] = useState(0)
   const [stkStatus, setStkStatus] = useState<"waiting" | "processing" | "success" | "failed">("waiting")
+  const fetchMainDetails = useMainStore((state) => state.fetchMainDetails)
+  const token = useMainStore((state) => state.token)
+  const [trackingID, setTrackingID] = useState("")
 
-  const minDeposit = 100
+  const minDeposit = 10
   const maxDeposit = 150000
+
+  const handleCheckStatus = async() => {
+    try {
+      const response = await checkStkStatus({trackingID})
+      if(response.status === "Success") {
+        setStkStatus("success")
+        setTimeout(() => {
+                setShowStkDialog(false)
+                setShowSuccessDialog(true)
+                setTimeout(() => {
+                  setShowSuccessDialog(false)
+                  router.push("/records?tab=deposit")
+                }, 3000)
+              }, 1000)
+      }else{
+        setStkStatus("failed")
+      }
+    } catch (error) {
+      console.error("Error checking STK status:", error)
+    }
+  }
 
   const handleAmountSelect = (value: number) => {
     setAmount(value.toString())
@@ -61,15 +88,6 @@ export default function RechargePage() {
       return
     }
 
-    if (numAmount < minDeposit) {
-      setError(`Minimum deposit is KSH ${minDeposit}`)
-      return
-    }
-
-    if (numAmount > maxDeposit) {
-      setError(`Maximum deposit is KSH ${maxDeposit.toLocaleString()}`)
-      return
-    }
 
     if (!/^0\d{9}$/.test(mpesaPhone) && !/^254\d{9}$/.test(mpesaPhone)) {
       setError("Please enter a valid M-Pesa phone number")
@@ -80,11 +98,35 @@ export default function RechargePage() {
     setStkProgress(0)
     setStkStatus("waiting")
     setShowStkDialog(true)
+    try {
+      const response = await initiateDeposit({
+        userID: token,
+        amount: String(numAmount),
+        account: mpesaPhone,
+        method: "mpesa",
+      })
+      if(response.status === "Success") {
+        toast.success("STK Push sent! Please check your phone.")
+        fetchMainDetails(token)
+        if(response.trackingID){
+          setTrackingID(response.trackingID)
+        }
+      } else {
+        toast.error(response.message || "Failed to initiate payment. Please try again.")
+        setShowStkDialog(false)
+        setStkStatus("failed")
+      }
+    } catch (error) {
+      console.error("Error initiating STK push:", error)
+      toast.error("Failed to initiate payment. Please try again.")
+      setShowStkDialog(false)
+      setStkStatus("failed")
+    }finally {
+      setIsLoading(false)
+      setStkStatus("processing")
+    }
 
-    // Simulate STK push initiation
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsLoading(false)
-    setStkStatus("processing")
+    
   }
 
   // Simulate STK progress
@@ -94,34 +136,19 @@ export default function RechargePage() {
         setStkProgress((prev) => {
           if (prev >= 100) {
             clearInterval(interval)
-            // Simulate success (80% chance) or failure
-            const isSuccess = Math.random() > 0.2
-            if (isSuccess) {
-              setStkStatus("success")
-              setTimeout(() => {
-                setShowStkDialog(false)
-                setShowSuccessDialog(true)
-                setTimeout(() => {
-                  setShowSuccessDialog(false)
-                  router.push("/records")
-                }, 3000)
-              }, 1000)
-            } else {
-              setStkStatus("failed")
-            }
+            handleCheckStatus()
             return 100
           }
           return prev + 2
         })
-      }, 100)
+      }, 500)
 
       return () => clearInterval(interval)
     }
   }, [stkStatus, router])
 
   const handleRetry = () => {
-    setStkProgress(0)
-    setStkStatus("processing")
+    handleInitiateSTK()
   }
 
   const handleCancel = () => {
