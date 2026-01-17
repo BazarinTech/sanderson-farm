@@ -3,20 +3,26 @@
 import Topbar from '@/components/shared/topbar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { claimBonus, couponRedeem } from '@/lib/backend/actions'
+import { useMainStore } from '@/lib/stores/use-main-store'
 import { Ticket01Icon } from 'hugeicons-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
-const bonusTiers = [
-  { required: 5, current: 0, salary: 200 },
-  { required: 6, current: 0, salary: 400 },
-  { required: 11, current: 0, salary: 600 },
-  { required: 20, current: 0, salary: 800 },
-]
 
 function Page() {
   const [couponCode, setCouponCode] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null)
+  const loginState = useMainStore((state) => state.loginState)
+  const fetchMainDetails = useMainStore((state) => state.fetchMainDetails)
+  const mainDetails = useMainStore((state) => state.mainDetails)
+  const [isLoading, setIsLoading] = useState(false)
+  const token = useMainStore((state) => state.token)
+
+    useEffect(() => {
+      loginState()
+    }, [loginState])
 
   const handleRedeemCoupon = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -29,17 +35,40 @@ function Page() {
     setMessage(null)
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    // Mock validation - in reality this would be an API call
-    if (couponCode.toUpperCase() === "BONUS100") {
-      setMessage({ type: "success", text: "Coupon redeemed successfully! KSH 100 added to your balance." })
-      setCouponCode("")
-    } else {
-      setMessage({ type: "error", text: "Invalid or expired coupon code. Please try again." })
+    try {
+      const response = await couponRedeem({userID: token, code: couponCode})
+      if(response.status === "Success"){
+        setMessage({ type: "success", text: response.message })
+        setCouponCode("")
+        fetchMainDetails(token)
+      }else{
+        setMessage({ type: "error", text: response.message })
+      }
+    } catch (error) {
+      console.error("Error redeeming coupon:", error)
+      setMessage({ type: "error", text: "An error occurred while redeeming the coupon. Please try again." })
+      return
+    }finally {
+      setIsSubmitting(false)
     }
+  }
 
-    setIsSubmitting(false)
+  const handleClaimBonus = async (bonusID: ID) => {
+    setIsLoading(true)
+    try {
+      const response = await claimBonus({userID: token, bonusID})
+      if(response.status === "Success"){
+        toast.success(response.message)
+        fetchMainDetails(token)
+      }else{
+        toast.error(response.message)
+      }
+    } catch (error) {
+      console.error("Error claiming bonus:", error)
+      toast.error("An error occurred while claiming the bonus.")
+    }finally {
+      setIsLoading(false)
+    }
   }
   return (
     <div>
@@ -84,8 +113,8 @@ function Page() {
 
       {/* Bonus Tiers */}
       <div className="space-y-4 px-4 mb-10">
-        {bonusTiers.map((tier, index) => {
-          const isReady = tier.current >= tier.required
+        {mainDetails?.bonuses.map((tier, index) => {
+          const isReady = mainDetails.referral.active_downlines >= tier.target
           return (
             <div key={index} className="overflow-hidden rounded-xl border-2 border-primary/20 bg-background">
               {/* Header Row */}
@@ -97,21 +126,27 @@ function Page() {
               {/* Values Row */}
               <div className="grid grid-cols-3 items-center px-4 py-4">
                 <span className="text-center text-lg font-bold text-foreground">
-                  {tier.current}/{tier.required}
+                  {mainDetails.referral.active_downlines}/{tier.target}
                 </span>
-                <span className="text-center text-lg font-bold text-foreground">Ksh {tier.salary}</span>
+                <span className="text-center text-lg font-bold text-foreground">Ksh {tier.reward}</span>
                 <div className="flex justify-center">
                   <Button
-                    variant={isReady ? "default" : "secondary"}
+                    variant={isReady ? "default" : tier.is_claimed ? "default" : "secondary"}
                     size="sm"
                     className={
-                      isReady
+                      isReady 
                         ? "bg-primary text-primary-foreground"
+                        : tier.is_claimed
+                        ? "bg-green-500 text-white cursor-not-allowed"
                         : "bg-muted text-muted-foreground cursor-not-allowed"
                     }
-                    disabled={!isReady}
+                    disabled={!isReady || tier.is_claimed || isLoading}
+                    onClick={() => {
+                      handleClaimBonus(tier.ID)
+                    }}
                   >
-                    {isReady ? "Claim" : "Not Ready"}
+                    {isReady ? "Claim" : tier.is_claimed ? "Claimed" : isLoading ? "Claiming..." : "Not Ready"}
+                   
                   </Button>
                 </div>
               </div>

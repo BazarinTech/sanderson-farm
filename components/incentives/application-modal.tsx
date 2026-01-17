@@ -8,17 +8,22 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { CheckmarkCircle02Icon, Clock01Icon } from "hugeicons-react"
+import { toast } from "sonner"
+import { applyIncentives } from "@/lib/backend/actions"
+import { useMainStore } from "@/lib/stores/use-main-store"
 
 type Props = {
   open: boolean
   onOpenChange: (open: boolean) => void
   tierName: string
   reward: string
+  tierID: ID
 }
 
-export function ApplicationModal({ open, onOpenChange, tierName, reward }: Props) {
+export function ApplicationModal({ open, onOpenChange, tierName, reward, tierID }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const token = useMainStore((state) => state.token)
   const [formData, setFormData] = useState({
     fullName: "",
     phoneNumber: "",
@@ -30,10 +35,29 @@ export function ApplicationModal({ open, onOpenChange, tierName, reward }: Props
     setIsSubmitting(true)
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+    try {
+      const response = await applyIncentives({
+        userID: token,
+        name: formData.fullName,
+        phone: formData.phoneNumber,
+        idNumber: formData.idNumber,
+        incentiveID: tierID,
+      })
+      if (response.status === "Success") {
+        toast.success("Application submitted successfully")
+        setIsSubmitted(true)
+      } else {
+        toast.error(response.message)
+        setIsSubmitted(false)
+      }
+    } catch (error) {
+      console.error("Error submitting application:", error)
+      toast.error("An error occurred while submitting your application. Please try again.")
+    }finally{
+      setIsSubmitting(false)
+      
+    }
+    
   }
 
   const handleClose = () => {

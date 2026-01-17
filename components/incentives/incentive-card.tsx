@@ -3,26 +3,17 @@
 import { Button } from "@/components/ui/button"
 import { UserGroupIcon, Money01Icon, Gif01Icon, CheckmarkCircle02Icon, LockIcon } from "hugeicons-react"
 
-export type IncentiveTier = {
-  id: number
-  level: string
-  name: string
-  requiredReferrals: number
-  weeklySalary: number
-  bonusItem?: string
-  bonusItemIcon?: string
-}
 
 type Props = {
-  tier: IncentiveTier
+  tier: Incentives
   currentReferrals: number
-  onApply: (tier: IncentiveTier) => void
+  onApply: (tier: Incentives) => void
   hasApplied?: boolean
 }
 
 export function IncentiveTierCard({ tier, currentReferrals, onApply, hasApplied }: Props) {
-  const isEligible = currentReferrals >= tier.requiredReferrals
-  const progress = Math.min((currentReferrals / tier.requiredReferrals) * 100, 100)
+  const isEligible = currentReferrals >= tier.referrals
+  const progress = Math.min((currentReferrals / tier.referrals) * 100, 100)
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
@@ -44,7 +35,7 @@ export function IncentiveTierCard({ tier, currentReferrals, onApply, hasApplied 
             <span className="text-sm">Active Referrals</span>
           </div>
           <span className="font-bold text-foreground">
-            {currentReferrals} / {tier.requiredReferrals}
+            {currentReferrals} / {tier.referrals}
           </span>
         </div>
 
@@ -66,7 +57,7 @@ export function IncentiveTierCard({ tier, currentReferrals, onApply, hasApplied 
               <Money01Icon size={20} />
               <span className="text-sm">Weekly Salary</span>
             </div>
-            <span className="font-bold text-green-600">KSH {tier.weeklySalary.toLocaleString()}</span>
+            <span className="font-bold text-green-600">KSH {tier.salary.toLocaleString()}</span>
           </div>
 
           {tier.bonusItem && (
@@ -98,7 +89,7 @@ export function IncentiveTierCard({ tier, currentReferrals, onApply, hasApplied 
           ) : (
             <Button disabled className="w-full rounded-xl py-5 bg-gray-100 text-gray-400 hover:bg-gray-100">
               <LockIcon size={18} className="mr-2" />
-              {tier.requiredReferrals - currentReferrals} more referrals needed
+              {tier.referrals - currentReferrals} more referrals needed
             </Button>
           )}
         </div>

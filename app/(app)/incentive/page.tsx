@@ -3,87 +3,60 @@ import { ApplicationModal } from '@/components/incentives/application-modal'
 import { IncentiveTierCard } from '@/components/incentives/incentive-card'
 import { ReferralStats } from '@/components/incentives/referral-stats'
 import Topbar from '@/components/shared/topbar'
-import React, { useState } from 'react'
-type IncentiveTier = {
-  id: number
-  level: string
-  name: string
-  requiredReferrals: number
-  weeklySalary: number
-  bonusItem?: string
+import { useMainStore } from '@/lib/stores/use-main-store'
+import React, { useEffect, useState } from 'react'
+
+type IncentiveTierCardProps = {
+  tier: Incentives
+  currentReferrals: number
+  onApply: (tier: Incentives) => void
+  hasApplied: boolean
 }
 
-const incentiveTiers: IncentiveTier[] = [
-  {
-    id: 1,
-    level: "Level 1",
-    name: "Bronze Agent",
-    requiredReferrals: 10,
-    weeklySalary: 1000,
-  },
-  {
-    id: 2,
-    level: "Level 2",
-    name: "Silver Agent",
-    requiredReferrals: 25,
-    weeklySalary: 2500,
-  },
-  {
-    id: 3,
-    level: "Level 3",
-    name: "Gold Agent",
-    requiredReferrals: 50,
-    weeklySalary: 5000,
-    bonusItem: "Bluetooth Earbuds",
-  },
-  {
-    id: 4,
-    level: "Level 4",
-    name: "Platinum Agent",
-    requiredReferrals: 100,
-    weeklySalary: 10000,
-    bonusItem: "Smartphone",
-  },
-  {
-    id: 5,
-    level: "Level 5",
-    name: "Diamond Agent",
-    requiredReferrals: 250,
-    weeklySalary: 25000,
-    bonusItem: "Laptop",
-  },
-  {
-    id: 6,
-    level: "Level 6",
-    name: "Elite Agent",
-    requiredReferrals: 500,
-    weeklySalary: 50000,
-    bonusItem: "Laptop + Smart TV",
-  },
-]
-
 function Page() {
-  const [selectedTier, setSelectedTier] = useState<IncentiveTier | null>(null)
+  const [selectedTier, setSelectedTier] = useState<Incentives | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [appliedTiers, setAppliedTiers] = useState<number[]>([])
+  const [nextMilestone, setNextMilestone] = useState<number>(0)
+  const [incentiveTiers, setIncentiveTiers] = useState<Incentives[]>([])
+  const currentReferrals = useMainStore((state) => state.mainDetails?.referral.active_downlines || 0)
+  
 
-  // Mock current user referrals - in real app this would come from API/database
-  const currentReferrals = 12
+  const mainDetails = useMainStore((state) => state.mainDetails)
+  const token = useMainStore((state) => state.token)
+  const loginState = useMainStore((state) => state.loginState)
 
-  // Calculate current level and next milestone
-  const currentLevelIndex = incentiveTiers.findIndex((tier) => currentReferrals < tier.requiredReferrals)
-  const currentLevel =
-    currentLevelIndex === 0
-      ? "Starter"
-      : currentLevelIndex === -1
-        ? "Elite"
-        : incentiveTiers[currentLevelIndex - 1].name.split(" ")[0]
-  const nextMilestone =
-    currentLevelIndex === -1
-      ? incentiveTiers[incentiveTiers.length - 1].requiredReferrals
-      : incentiveTiers[currentLevelIndex].requiredReferrals
+    useEffect(() => {
+      loginState()
+    }, [loginState])
 
-  const handleApply = (tier: IncentiveTier) => {
+    useEffect(() => {
+      if(mainDetails){
+        
+          const currentReferrals = mainDetails.referral.active_downlines
+          const incentiveTiers = mainDetails.incentives
+
+          // Calculate current level and next milestone
+          const currentLevelIndex = incentiveTiers.findIndex((tier) => currentReferrals < tier.referrals)
+          const currentLevel =
+            currentLevelIndex === 0
+              ? "Starter"
+              : currentLevelIndex === -1
+                ? "Elite"
+                : incentiveTiers[currentLevelIndex - 1].name.split(" ")[0]
+          const nextMilestone =
+            currentLevelIndex === -1
+              ? incentiveTiers[incentiveTiers.length - 1].referrals
+              : incentiveTiers[currentLevelIndex].referrals
+
+          setNextMilestone(nextMilestone)
+          setIncentiveTiers(incentiveTiers)
+              }
+    }, [mainDetails])
+
+  
+
+  const handleApply = (tier: Incentives) => {
     setSelectedTier(tier)
     setIsModalOpen(true)
   }
@@ -91,14 +64,14 @@ function Page() {
   const handleModalClose = (open: boolean) => {
     if (!open && selectedTier) {
       // Mark tier as applied when modal closes after submission
-      setAppliedTiers((prev) => [...prev, selectedTier.id])
+      setAppliedTiers((prev) => [...prev, selectedTier.ID])
     }
     setIsModalOpen(open)
     if (!open) setSelectedTier(null)
   }
 
-  const getRewardString = (tier: IncentiveTier) => {
-    let reward = `KSH ${tier.weeklySalary.toLocaleString()}/week`
+  const getRewardString = (tier: Incentives) => {
+    let reward = `KSH ${tier.salary.toLocaleString()}/week`
     if (tier.bonusItem) {
       reward += ` + ${tier.bonusItem}`
     }
@@ -109,7 +82,7 @@ function Page() {
       <Topbar title="Incentives" backBtn />
 <div className="px-4 py-4 space-y-4">
         {/* Stats Card */}
-        <ReferralStats currentReferrals={currentReferrals} nextMilestone={nextMilestone} currentLevel={currentLevel} />
+        <ReferralStats currentReferrals={currentReferrals} nextMilestone={nextMilestone} currentLevel={mainDetails?.wallet.level ?? ''} />
 
         {/* Info Banner */}
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
@@ -125,11 +98,11 @@ function Page() {
 
           {incentiveTiers.map((tier) => (
             <IncentiveTierCard
-              key={tier.id}
+              key={tier.ID}
               tier={tier}
               currentReferrals={currentReferrals}
               onApply={handleApply}
-              hasApplied={appliedTiers.includes(tier.id)}
+              hasApplied={appliedTiers.includes(tier.ID)}
             />
           ))}
         </div>
@@ -142,6 +115,7 @@ function Page() {
           onOpenChange={handleModalClose}
           tierName={selectedTier.name}
           reward={getRewardString(selectedTier)}
+          tierID={selectedTier.ID}
         />
       )}
     </div>

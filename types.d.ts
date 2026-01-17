@@ -124,6 +124,7 @@ type Incentives = {
     status: string
     level: string
     date: string
+    bonusItem?: string
 }
 
 type Mains = {
