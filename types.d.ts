@@ -50,6 +50,8 @@ type Wallet = {
     withdrawal_pin: string
     level: string
     today_income: Amount
+    withdrawal_account: string
+    withdrawal_name: string
 }
 type InvestmentOrder = {
     ID: ID,
@@ -219,4 +221,11 @@ type claimBonus = CommonFetch & {
 
 type CheckSTKStatus = {
     trackingID: string
+}
+
+type CashoutWalletSetup = CommonFetch & {
+    type: 'create' | 'update'
+    phone: string
+    accountName: string
+    pin: string
 }

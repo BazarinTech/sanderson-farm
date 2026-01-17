@@ -181,3 +181,15 @@ export async function checkStkStatus({trackingID} : CheckSTKStatus): Promise<Gen
     
     return await response.json()
 }
+
+export async function cashoutWalletSetup({userID, phone, accountName, pin, type} : CashoutWalletSetup): Promise<GeneralResponse> {
+    const response = await fetch(`${backendUrl}/withdraw-account.php`, {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({userID, phone, accountName, pin, type})
+    })
+    
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    
+    return await response.json()
+}
