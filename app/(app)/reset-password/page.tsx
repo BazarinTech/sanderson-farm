@@ -16,6 +16,9 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import Topbar from "@/components/shared/topbar"
+import { updatePassword } from "@/lib/backend/actions"
+import { useMainStore } from "@/lib/stores/use-main-store"
+import { toast } from "sonner"
 
 export default function ResetPasswordPage() {
   const router = useRouter()
@@ -25,6 +28,7 @@ export default function ResetPasswordPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [showSuccess, setShowSuccess] = useState(false)
+  const token = useMainStore((state) => state.token)
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -51,14 +55,25 @@ export default function ResetPasswordPage() {
     }
 
     setIsLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsLoading(false)
-
-    setShowSuccess(true)
-    setTimeout(() => {
-      setShowSuccess(false)
-      router.push("/profile")
-    }, 2000)
+    try {
+      const response = await updatePassword({userID: token, oldPassword: currentPassword, newPassword, confirmPassword})
+      if(response.status == "Success"){
+        toast.success(response.message)
+        setShowSuccess(true)
+        setTimeout(() => {
+          setShowSuccess(false)
+          router.push("/profile")
+        }, 2000)
+      }else{
+        toast.error(response.message)
+      }
+    } catch (error) {
+      console.error("Password reset failed:", error)
+      setError("Failed to reset password. Please try again.")
+    }finally {
+      setIsLoading(false)
+    }
+    
   }
 
   return (
