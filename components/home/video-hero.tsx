@@ -21,7 +21,7 @@ export function VideoHero() {
     >
       <video ref={videoRef} autoPlay loop muted playsInline className="w-full h-full object-cover">
         <source
-          src="/grover.mp4"
+          src="https://grover.xgramm.com/admin/uploads//grover.mp4"
           type="video/mp4"
         />
       </video>
