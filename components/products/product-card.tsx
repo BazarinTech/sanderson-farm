@@ -61,7 +61,7 @@ export function ProductCard({ID, name, image, max, duration, returns, order_limi
           </div>
           <div className="flex justify-between items-center mb-1">
             <span className="text-sm text-muted-foreground">Cycle :</span>
-            <span className="text-sm font-medium text-foreground">{duration} Day</span>
+            <span className="text-sm font-medium text-foreground">{duration} Days</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">Daily Income :</span>
