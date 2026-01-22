@@ -21,7 +21,7 @@ export function VideoHero() {
     >
       <video ref={videoRef} autoPlay loop muted playsInline className="w-full h-full object-cover">
         <source
-          src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+          src="/grover.mp4"
           type="video/mp4"
         />
       </video>

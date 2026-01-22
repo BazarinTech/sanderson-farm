@@ -20,7 +20,7 @@ function encodeUserId(userId: number): string {
 
 function decodeInviteCode(code: string): number {
   if (!/^[A-Za-z0-9]{6}$/.test(code)) {
-    return 409; // Invalid format
+    return 531; // Invalid format
   }
 
   let num = 0;
