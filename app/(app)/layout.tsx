@@ -1,4 +1,5 @@
 import ClientLoginInitializer from "@/components/shared/client-login-initializer"
+import { FloatingButtons } from "@/components/shared/floating-buttons"
 
 export default async function RootLayout({
   children,
@@ -10,6 +11,7 @@ export default async function RootLayout({
     <>
         <ClientLoginInitializer/>
         {children}
+        <FloatingButtons />
     </>
   )
 }

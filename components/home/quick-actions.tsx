@@ -7,6 +7,7 @@ import {
   Calendar01Icon,
   TaskDone01Icon,
   InformationCircleIcon,
+  MarketingIcon,
 } from "hugeicons-react"
 import { useRouter } from "next/navigation"
 
@@ -14,7 +15,7 @@ const actions = [
   { icon: Wallet01Icon, label: "Recharge", color: "bg-primary", link: "/recharge" },
   { icon: Download01Icon, label: "Withdraw", color: "bg-primary", link: "/cashout" },
   { icon: Gif01Icon, label: "Bonus", color: "bg-primary", link: "/bonus" },
-  { icon: Calendar01Icon, label: "Incentive", color: "bg-primary", link: "/incentive" },
+  { icon: MarketingIcon, label: "Influencer", color: "bg-primary", link: "/incentive" },
   { icon: TaskDone01Icon, label: "Records", color: "bg-primary", link: "/records" },
   { icon: InformationCircleIcon, label: "About", color: "bg-primary", link: "/company" },
 ]

@@ -17,7 +17,7 @@ function Page() {
       <MissionSection  />
       <ServicesSection />
       <HowItWorks />
-      <ContactSection />
+      {/* <ContactSection /> */}
     </div>
   )
 }
