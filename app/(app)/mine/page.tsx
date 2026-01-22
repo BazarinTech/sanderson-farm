@@ -25,6 +25,8 @@ import {
   CoinsSwapIcon,
   Gif01Icon,
   Logout01Icon,
+  WhatsappIcon,
+  TelegramIcon,
 } from "hugeicons-react"
 import Link from 'next/dist/client/link'
 import { useRouter } from 'next/navigation'
@@ -32,9 +34,9 @@ import React, { useEffect, useState } from 'react'
 
 const menuItems = [
   { icon: InformationCircleIcon, label: "Withdraw Account", href: "/cashout-wallet" },
-  { icon: Agreement02Icon, label: "Telegram Channel", href: "#" },
+  { icon: TelegramIcon, label: "Telegram Channel", href: "#" },
   { icon: Ticket02Icon, label: "My Coupon", href: "/bonus" },
-  { icon: PackageIcon, label: "Whatsapp group", href: "#" },
+  { icon: WhatsappIcon, label: "Whatsapp group", href: "#" },
   { icon: File01Icon, label: "Records", href: "/records" },
   { icon: InformationSquareIcon, label: "About US", href: "/company" },
   { icon: LockPasswordIcon, label: "Reset Password", href: "/reset-password" },

@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card"
 
 const events = [
   {
-    title: "Weekly Incentive Fund",
+    title: "Weekly Influencer Fund",
     image: "/colorful-event-promotion-banner.jpg",
   },
   {
