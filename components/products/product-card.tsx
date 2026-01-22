@@ -67,6 +67,10 @@ export function ProductCard({ID, name, image, max, duration, returns, order_limi
             <span className="text-sm text-muted-foreground">Daily Income :</span>
             <span className="text-sm font-bold text-primary">{useCurrency(returns)}</span>
           </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-muted-foreground">Total Income :</span>
+            <span className="text-sm font-bold text-primary">{useCurrency(Number(returns) * Number(duration))}</span>
+          </div>
         </div>
       </div>
 
