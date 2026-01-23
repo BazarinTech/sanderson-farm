@@ -8,11 +8,22 @@ import { toast } from "sonner";
 import { makeInvestment } from "@/lib/backend/actions";
 import { useMainStore } from "@/lib/stores/use-main-store";
 
+interface Product {
+  ID: ID;
+  name: string;
+  image: string;
+  max: number;
+  duration: number;
+  returns: number;
+  order_limit: number;
+}
 
 export function ProductCard({ID, name, image, max, duration, returns, order_limit }: Product) {
   const token = useMainStore((state) => state.token);
   const fetchMainDetails = useMainStore((state) => state.fetchMainDetails);
   const [isLoading, setLoading] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  
   const src = image
   ? `https://grover.xgramm.com/admin/uploads/${image}`
   : "/placeholder.svg";
@@ -34,6 +45,7 @@ export function ProductCard({ID, name, image, max, duration, returns, order_limi
       setLoading(false);
     }
   };
+
   return (
     <div className="bg-card rounded-xl p-4 shadow-sm border border-border w-full flex-col justify-center items-center">
       {/* Product Name */}
@@ -42,14 +54,21 @@ export function ProductCard({ID, name, image, max, duration, returns, order_limi
       {/* Product Info Row */}
       <div className="flex flex-col justify-center items-center w-full gap-4 mb-4">
         {/* Product Image */}
-        <div className="w-80 overflow-hidden shrink-0">
+        <div className="w-80 overflow-hidden shrink-0 relative">
+          {/* Loading skeleton */}
+          {!imageLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center bg-muted rounded-lg animate-pulse">
+              <Loading01Icon className="w-8 h-8 text-muted-foreground animate-spin" />
+            </div>
+          )}
           <Image
-            src={src}
+            src={src || "/placeholder.svg"}
             alt={name}
             width={500}
             height={500}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
             unoptimized={src.startsWith("https://grover.xgramm.com")}
+            onLoad={() => setImageLoaded(true)}
           />
         </div>
 
