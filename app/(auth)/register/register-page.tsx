@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -32,9 +32,16 @@ export default function RegisterPage() {
   const [error, setError] = useState("")
   const [countdown, setCountdown] = useState(0)
   const [isVerified, setIsVerified] = useState(false)
+  const [uplineId, setUplineID] = useState("")
   const searchParams = useSearchParams();
   const upline = searchParams.get("inviteCode");
   const { decode } = useInviteCode()
+
+  useEffect(() => {
+    if (upline) {
+      setUplineID(String(decode(upline)))
+    }
+  }, [upline])
 
   const startCountdown = () => {
     setCountdown(60)
@@ -107,7 +114,7 @@ export default function RegisterPage() {
     e.preventDefault()
     setError("")
 
-    if (!fullName || !password || !confirmPassword) {
+    if (!fullName || !password || !confirmPassword || !email) {
       setError("Please fill in all required fields")
       return
     }
@@ -130,7 +137,7 @@ export default function RegisterPage() {
 
     setIsLoading(true)
     try {
-      const response = await auth({email, password, confirmPassword, phone, name: fullName, type: 'register', upline: String(decode(upline || "")) || ""})
+      const response = await auth({email, password, confirmPassword, phone, name: fullName, type: 'register', upline: uplineId})
       if (response.status == 'Success') {
         const loginState = useMainStore.getState().loginState
         loginState()
@@ -271,6 +278,8 @@ export default function RegisterPage() {
               <p className="text-muted-foreground text-sm mt-1">Just a few more details</p>
             </div>
 
+            
+
             <div className="space-y-2">
               <Label htmlFor="fullName">Full Name *</Label>
               <div className="relative">
@@ -287,7 +296,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email (Optional)</Label>
+              <Label htmlFor="email">Email *</Label>
               <div className="relative">
                 <Mail01Icon size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <Input

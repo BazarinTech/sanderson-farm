@@ -30,7 +30,7 @@ function Page() {
     if (mainDetails) {
       const inviteCode = useInvite.generate(mainDetails.user.ID)
       setReferralCode(inviteCode)
-      setReferralLink(`${window.location.origin}/register?ref=${inviteCode}`)
+      setReferralLink(`${window.location.origin}/register?inviteCode=${inviteCode}`)
     }
   }, [mainDetails])
 
