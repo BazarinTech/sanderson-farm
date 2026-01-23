@@ -8,16 +8,6 @@ import { toast } from "sonner";
 import { makeInvestment } from "@/lib/backend/actions";
 import { useMainStore } from "@/lib/stores/use-main-store";
 
-interface Product {
-  ID: ID;
-  name: string;
-  image: string;
-  max: number;
-  duration: number;
-  returns: number;
-  order_limit: number;
-}
-
 export function ProductCard({ID, name, image, max, duration, returns, order_limit }: Product) {
   const token = useMainStore((state) => state.token);
   const fetchMainDetails = useMainStore((state) => state.fetchMainDetails);
