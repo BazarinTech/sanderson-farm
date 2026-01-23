@@ -1,26 +1,28 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { VolumeHighIcon, VolumeOffIcon } from "hugeicons-react"
+import { VolumeHighIcon, VolumeOffIcon, Loading03Icon } from "hugeicons-react"
 
 export function VideoHero() {
   const [isMuted, setIsMuted] = useState(true)
+  const [isLoaded, setIsLoaded] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    // Try to “warm” the video as soon as component mounts
     const v = videoRef.current
     if (!v) return
 
-    // Ensure attributes are applied early
     v.muted = true
     v.playsInline = true
     v.preload = "auto"
 
-    // Attempt play; some browsers will delay until enough buffer
     const p = v.play()
     if (p && typeof p.catch === "function") p.catch(() => {})
   }, [])
+
+  const handleCanPlay = () => {
+    setIsLoaded(true)
+  }
 
   const toggleMute = () => {
     const v = videoRef.current
@@ -34,6 +36,12 @@ export function VideoHero() {
       className="relative w-full aspect-video max-h-[300px] overflow-hidden rounded-xl cursor-pointer group"
       onClick={toggleMute}
     >
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center z-10">
+          <Loading03Icon className="w-8 h-8 text-muted-foreground animate-spin" />
+        </div>
+      )}
+
       <video
         ref={videoRef}
         autoPlay
@@ -42,9 +50,10 @@ export function VideoHero() {
         playsInline
         preload="auto"
         poster="/hero-poster.jpg"
-        className="w-full h-full object-cover"
+        onCanPlay={handleCanPlay}
+        className={`w-full h-full object-cover transition-opacity duration-300 ${isLoaded ? "opacity-100" : "opacity-0"}`}
       >
-        <source src="https://grover.xgramm.com/admin/uploads/grover.webm" type="video/webm" />
+        <source src="https://grover.xgramm.com/admin/uploads/grover.hero.webm" type="video/webm" />
         <source src="https://grover.xgramm.com/admin/uploads/grover.fast.mp4" type="video/mp4" />
       </video>
 
