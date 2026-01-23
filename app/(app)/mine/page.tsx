@@ -41,7 +41,7 @@ const menuItems = [
   { icon: InformationSquareIcon, label: "About US", href: "/company" },
   { icon: LockPasswordIcon, label: "Reset Password", href: "/reset-password" },
   { icon: CustomerServiceIcon, label: "Customer Service", href: "#" },
-  { icon: Download02Icon, label: "App Download", href: "#" },
+  { icon: Download02Icon, label: "App Download", href: "https://apk.e-droid.net/apk/app3897680-jc1e5h.apk?v=2" },
   { icon: Logout01Icon, label: "Logout", href: "/login" },
 ]
 
