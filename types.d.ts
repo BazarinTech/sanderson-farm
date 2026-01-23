@@ -2,7 +2,7 @@ type ID = number
 
 type Amount = string
 
-type TransactionStatus = "Pending" | "Completed" | "Failed" | "Success" | "Approved" | "Rejected"
+type TransactionStatus = "Pending" | "Completed" | "Failed" | "Success" | "Approved" | "Rejected" | "Processing"
 
 type Auth = {
     email?: string

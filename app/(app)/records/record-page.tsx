@@ -14,6 +14,7 @@ const statusStyles: Record<TransactionStatus, string> = {
   Approved: "bg-green-500 text-white",
   Rejected: "bg-red-500 text-white",
   Completed: "bg-blue-500 text-white",
+  Processing: "bg-blue-500 text-white",
 }
 
 function TransactionCard({ transaction }: { transaction: Transactions }) {
