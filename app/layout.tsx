@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import { FloatingButtons } from "@/components/shared/floating-buttons";
 
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
@@ -37,7 +38,7 @@ export default function RootLayout({
       >
         
         {children}
-        
+        <FloatingButtons />
         <Toaster richColors position="top-center" />
       </body>
     </html>
