@@ -34,13 +34,13 @@ import React, { useEffect, useState } from 'react'
 
 const menuItems = [
   { icon: InformationCircleIcon, label: "Withdraw Account", href: "/cashout-wallet" },
-  { icon: TelegramIcon, label: "Telegram Channel", href: "#" },
+  { icon: TelegramIcon, label: "Telegram Channel", href: "https://t.me/groverworker" },
   { icon: Ticket02Icon, label: "My Coupon", href: "/bonus" },
-  { icon: WhatsappIcon, label: "Whatsapp group", href: "#" },
+  { icon: WhatsappIcon, label: "Whatsapp group", href: "https://chat.whatsapp.com/Hal0KJ6Ac0ZCdap4mZcS0p" },
   { icon: File01Icon, label: "Records", href: "/records" },
   { icon: InformationSquareIcon, label: "About US", href: "/company" },
   { icon: LockPasswordIcon, label: "Reset Password", href: "/reset-password" },
-  { icon: CustomerServiceIcon, label: "Customer Service", href: "#" },
+  { icon: CustomerServiceIcon, label: "Customer Service", href: "https://wa.me/12897500155?text=Hello%20I%20need%20help" },
   { icon: Download02Icon, label: "App Download", href: "https://apk.e-droid.net/apk/app3897680-jc1e5h.apk?v=2" },
   { icon: Logout01Icon, label: "Logout", href: "/login" },
 ]

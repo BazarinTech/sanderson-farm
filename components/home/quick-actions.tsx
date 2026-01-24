@@ -7,8 +7,8 @@ import {
   InformationCircleIcon,
   MarketingIcon,
   GiftIcon,
-  GroupItemsIcon,
   WhatsappIcon,
+  WhatsappBusinessIcon,
 } from "hugeicons-react"
 import { useRouter } from "next/navigation"
 
@@ -19,7 +19,8 @@ const actions = [
   { icon: MarketingIcon, label: "Influencer", color: "bg-primary", link: "/incentive" },
   { icon: TaskDone01Icon, label: "Records", color: "bg-primary", link: "/records" },
   { icon: InformationCircleIcon, label: "About", color: "bg-primary", link: "/company" },
-  { icon: WhatsappIcon, label: "Whatsapp Group", color: "bg-primary", link: "/" },
+  { icon: WhatsappIcon, label: "Whatsapp Group", color: "bg-primary", link: "https://chat.whatsapp.com/Hal0KJ6Ac0ZCdap4mZcS0p" },
+  { icon: WhatsappBusinessIcon, label: "Whatsapp Channel", color: "bg-primary", link: "https://whatsapp.com/channel/0029VbBqPpvC6Zvad4q7xx2F" }
 ]
 
 export function QuickActions() {
