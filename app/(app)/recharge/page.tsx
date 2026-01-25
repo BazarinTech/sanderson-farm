@@ -27,7 +27,7 @@ import { useMainStore } from "@/lib/stores/use-main-store"
 import { toast } from "sonner"
 import { checkStkStatus, initiateDeposit } from "@/lib/backend/actions"
 
-const PRESET_AMOUNTS = [800, 1500, 2000, 5000, 10000, 20000]
+const PRESET_AMOUNTS = [900, 2300, 4500, 8500, 11500, 18000, 24000, 40000, 80000]
 
 export default function RechargePage() {
   const router = useRouter()
@@ -43,8 +43,8 @@ export default function RechargePage() {
   const token = useMainStore((state) => state.token)
   const [trackingID, setTrackingID] = useState("")
 
-  const minDeposit = 1
-  const maxDeposit = 150000
+  const minDeposit = 900
+  const maxDeposit = 160000
 
   const handleCheckStatus = async() => {
     try {
