@@ -21,7 +21,7 @@ type Step = "phone" | "verify" | "details"
 
 export default function RegisterPage() {
   const router = useRouter()
-  const [step, setStep] = useState<Step>("phone")
+  const [step, setStep] = useState<Step>("details")
   const [phone, setPhone] = useState("")
   const [verificationCode, setVerificationCode] = useState("")
   const [fullName, setFullName] = useState("")
@@ -113,6 +113,11 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
+
+    if (!/^0\d{9}$/.test(phone) && !/^254\d{9}$/.test(phone)) {
+      setError("Please enter a valid phone number")
+      return
+    }
 
     if (!fullName || !password || !confirmPassword || !email) {
       setError("Please fill in all required fields")
@@ -278,6 +283,23 @@ export default function RegisterPage() {
               <p className="text-muted-foreground text-sm mt-1">Just a few more details</p>
             </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone Number(Safaricom Only)</Label>
+              <div className="relative">
+                <SmartPhone01Icon
+                  size={20}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                />
+                <Input
+                  id="phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="0712345678"
+                  className="pl-10 h-12"
+                />
+              </div>
+            </div>
             
 
             <div className="space-y-2">
