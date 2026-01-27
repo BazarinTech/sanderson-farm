@@ -120,7 +120,7 @@ function Page() {
               {/* Header Row */}
               <div className="grid grid-cols-3 border-b border-primary/10 px-4 py-3">
                 <span className="text-center text-sm text-muted-foreground">Invited Friends</span>
-                <span className="text-center text-sm text-muted-foreground">Salary</span>
+                <span className="text-center text-sm text-muted-foreground">Bonus</span>
                 <span className="text-center text-sm text-muted-foreground">Claim</span>
               </div>
               {/* Values Row */}
