@@ -31,7 +31,7 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [countdown, setCountdown] = useState(0)
-  const [isVerified, setIsVerified] = useState(false)
+  const [isVerified, setIsVerified] = useState(true)
   const [uplineId, setUplineID] = useState("")
   const searchParams = useSearchParams();
   const upline = searchParams.get("inviteCode");
@@ -69,7 +69,7 @@ export default function RegisterPage() {
       const response = await requestVerificationCode({phone})
       if (response.status == 'Success') {
         toast.success("Verification code sent successfully")
-        setStep("verify")
+        setStep("details")
       } else {
         setError(response.message || "Failed to send verification code")
       }
