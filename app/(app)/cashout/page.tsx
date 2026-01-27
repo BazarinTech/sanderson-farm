@@ -282,7 +282,7 @@ export default function CashoutPage() {
             <div className="mt-6 flex items-start gap-3 p-4 bg-blue-50 rounded-xl">
               <InformationCircleIcon size={20} className="text-blue-600 shrink-0 mt-0.5" />
               <p className="text-sm text-blue-700">
-                Withdrawals are processed a maximum of 2 hours to your registered M-Pesa number. Fee charged is{" "}
+                Withdrawals are processed a maximum of 3 hours to your registered M-Pesa number. Fee charged is{" "}
                 {mainDetails?.controls.withFee}% per transaction.
               </p>
             </div>
