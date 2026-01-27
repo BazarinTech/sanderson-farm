@@ -36,7 +36,7 @@ const menuItems = [
   { icon: InformationCircleIcon, label: "Withdraw Account", href: "/cashout-wallet" },
   { icon: TelegramIcon, label: "Telegram Channel", href: "https://t.me/groverworker" },
   { icon: Ticket02Icon, label: "My Coupon", href: "/bonus" },
-  { icon: WhatsappIcon, label: "Whatsapp group", href: "https://chat.whatsapp.com/Hal0KJ6Ac0ZCdap4mZcS0p" },
+  { icon: WhatsappIcon, label: "Whatsapp group", href: "https://chat.whatsapp.com/Kp0Tyxk90qpEZS3OWwccXT" },
   { icon: File01Icon, label: "Records", href: "/records" },
   { icon: InformationSquareIcon, label: "About US", href: "/company" },
   { icon: LockPasswordIcon, label: "Reset Password", href: "/reset-password" },
