@@ -15,7 +15,7 @@ function Page() {
     }, [loginState])
   return (
     <div>
-      <Topbar title="Grover Products" />
+      <Topbar title="Grover Opportunities" />
 
       <main className="max-w-md mx-auto px-4 py-4 space-y-4 mb-20">
         {mainDetails?.products.map((product) => (
