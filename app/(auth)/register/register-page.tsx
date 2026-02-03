@@ -21,7 +21,7 @@ type Step = "phone" | "verify" | "details"
 
 export default function RegisterPage() {
   const router = useRouter()
-  const [step, setStep] = useState<Step>("details")
+  const [step, setStep] = useState<Step>("phone")
   const [phone, setPhone] = useState("")
   const [verificationCode, setVerificationCode] = useState("")
   const [fullName, setFullName] = useState("")
@@ -31,7 +31,7 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [countdown, setCountdown] = useState(0)
-  const [isVerified, setIsVerified] = useState(true)
+  const [isVerified, setIsVerified] = useState(false)
   const [uplineId, setUplineID] = useState("")
   const searchParams = useSearchParams();
   const upline = searchParams.get("inviteCode");
@@ -69,7 +69,7 @@ export default function RegisterPage() {
       const response = await requestVerificationCode({phone})
       if (response.status == 'Success') {
         toast.success("Verification code sent successfully")
-        setStep("details")
+        setStep("verify")
       } else {
         setError(response.message || "Failed to send verification code")
       }
@@ -283,7 +283,7 @@ export default function RegisterPage() {
               <p className="text-muted-foreground text-sm mt-1">Just a few more details</p>
             </div>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label htmlFor="phone">Phone Number(Safaricom Only)</Label>
               <div className="relative">
                 <SmartPhone01Icon
@@ -299,7 +299,7 @@ export default function RegisterPage() {
                   className="pl-10 h-12"
                 />
               </div>
-            </div>
+            </div> */}
             
 
             <div className="space-y-2">
