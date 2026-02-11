@@ -22,9 +22,9 @@ function Page() {
   const loginState = useMainStore((state) => state.loginState)
   const mainDetails = useMainStore((state) => state.mainDetails)
 
-  useEffect(() => {
-    loginState()
-  }, [loginState])
+  // useEffect(() => {
+  //   loginState()
+  // }, [loginState])
 
   useEffect(() => {
     if (mainDetails) {

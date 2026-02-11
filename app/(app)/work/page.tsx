@@ -12,10 +12,10 @@ function Page() {
   const [validOrders, setValidOrders] = useState<InvestmentOrder[]>([]);
   const [expiredOrders, setExpiredOrders] = useState<InvestmentOrder[]>([]);
 
-  const loginState = useMainStore((state) => state.loginState)
-    useEffect(() => {
-      loginState()
-    }, [loginState])
+  // const loginState = useMainStore((state) => state.loginState)
+  //   useEffect(() => {
+  //     loginState()
+  //   }, [loginState])
 
   useEffect(() => {
     if (mainDetails) {

@@ -10,9 +10,9 @@ import React, { useEffect } from 'react'
 function Page() {
   const mainDetails = useMainStore((state) => state.mainDetails)
   const loginState = useMainStore((state) => state.loginState)
-    useEffect(() => {
-      loginState()
-    }, [loginState])
+    // useEffect(() => {
+    //   loginState()
+    // }, [loginState])
   return (
     <div>
       <Topbar title="Grover Opportunities" />
