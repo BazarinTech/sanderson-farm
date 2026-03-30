@@ -11,7 +11,7 @@ const contactInfo = [
   {
     icon: Mail01Icon,
     label: "Email",
-    value: "support@groverworker.com",
+    value: "support@sandersonfarms.com",
   },
   {
     icon: Location01Icon,
@@ -43,7 +43,7 @@ export function ContactSection() {
         ))}
       </div>
       <p className="text-center text-xs text-muted-foreground mt-6">
-        &copy; 2025 Grover Worker Company. All rights reserved.
+        &copy; 2025 Sanderson Farms. All rights reserved.
       </p>
     </div>
   )

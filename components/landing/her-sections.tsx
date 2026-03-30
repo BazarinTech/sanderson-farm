@@ -19,13 +19,13 @@ export function HeroSection() {
       {/* Main Headline */}
       <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl text-balance">
         Your gateway to
-        <span className="text-primary"> flexible work</span>
+        <span className="text-primary"> farm earnings</span>
       </h1>
 
       {/* Subheadline */}
       <p className="mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl text-pretty leading-relaxed">
-        Join thousands of workers earning on their own terms. Connect with opportunities, promote orders, and build your
-        income with Grover Worker.
+        Join thousands of workers earning on their own terms. Connect with farm opportunities, promote products, and
+        build your income with Sanderson Farms.
       </p>
 
       {/* CTA Buttons */}

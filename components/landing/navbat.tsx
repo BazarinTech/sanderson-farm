@@ -14,7 +14,7 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="text-xl font-bold text-primary">
-            Grover Worker
+            Sanderson Farms
           </Link>
 
           {/* Desktop Navigation */}

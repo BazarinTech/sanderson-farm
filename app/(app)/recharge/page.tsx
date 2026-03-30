@@ -163,17 +163,17 @@ export default function RechargePage() {
 
       <div className="flex-1 px-6 py-6">
         {/* M-Pesa Info Banner */}
-        <div className="bg-linear-to-r from-green-600 to-green-500 rounded-2xl p-5 text-white mb-6">
+        <div className="bg-primary rounded-2xl p-5 text-primary-foreground mb-6">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
               <span className="text-lg font-bold">M</span>
             </div>
             <div>
               <h3 className="font-bold">M-Pesa Deposit</h3>
-              <p className="text-white/80 text-sm">Instant & Secure</p>
+              <p className="text-primary-foreground/80 text-sm">Instant & Secure</p>
             </div>
           </div>
-          <p className="text-sm text-white/90 mt-3">
+          <p className="text-sm text-primary-foreground/90 mt-3">
             You will receive an STK push to complete the payment on your phone.
           </p>
         </div>
@@ -250,7 +250,7 @@ export default function RechargePage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Transaction Fee</span>
-                <span className="font-medium text-green-600">FREE</span>
+                <span className="font-medium text-primary">FREE</span>
               </div>
               <div className="h-px bg-border my-2" />
               <div className="flex justify-between">
@@ -263,7 +263,7 @@ export default function RechargePage() {
 
         <Button
           onClick={handleInitiateSTK}
-          className="w-full h-14 text-lg font-semibold bg-green-600 hover:bg-green-700"
+          className="w-full h-14 text-lg font-semibold"
           disabled={!amount || Number.parseInt(amount) <= 0 || isLoading}
         >
           {isLoading ? "Initiating..." : "Pay with M-Pesa"}
@@ -271,9 +271,9 @@ export default function RechargePage() {
 
         {/* Instructions */}
         <div className="mt-6 space-y-3">
-          <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-xl">
-            <InformationCircleIcon size={20} className="text-blue-600 shrink-0 mt-0.5" />
-            <div className="text-sm text-blue-700">
+          <div className="flex items-start gap-3 p-4 bg-primary/10 rounded-xl">
+            <InformationCircleIcon size={20} className="text-primary shrink-0 mt-0.5" />
+            <div className="text-sm text-foreground">
               <p className="font-semibold mb-1">How it works:</p>
               <ol className="list-decimal list-inside space-y-1">
                 <li>Click &quot;Pay with M-Pesa&quot;</li>
@@ -292,8 +292,8 @@ export default function RechargePage() {
           <AlertDialogHeader className="text-center">
             {stkStatus === "waiting" && (
               <>
-                <div className="w-16 h-16 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <Loading01Icon size={32} className="text-green-600 animate-spin" />
+                <div className="w-16 h-16 bg-primary/10 rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <Loading01Icon size={32} className="text-primary animate-spin" />
                 </div>
                 <AlertDialogTitle className="text-center">Sending STK Push...</AlertDialogTitle>
                 <AlertDialogDescription className="text-center">
@@ -304,8 +304,8 @@ export default function RechargePage() {
 
             {stkStatus === "processing" && (
               <>
-                <div className="w-16 h-16 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <SmartPhone01Icon size={32} className="text-green-600" />
+                <div className="w-16 h-16 bg-primary/10 rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <SmartPhone01Icon size={32} className="text-primary" />
                 </div>
                 <AlertDialogTitle className="text-center">Check Your Phone</AlertDialogTitle>
                 <AlertDialogDescription className="text-center space-y-4">
@@ -325,8 +325,8 @@ export default function RechargePage() {
 
             {stkStatus === "success" && (
               <>
-                <div className="w-16 h-16 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <CheckmarkCircle01Icon size={32} className="text-green-600" />
+                <div className="w-16 h-16 bg-primary/10 rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <CheckmarkCircle01Icon size={32} className="text-primary" />
                 </div>
                 <AlertDialogTitle className="text-center">Payment Successful!</AlertDialogTitle>
                 <AlertDialogDescription className="text-center">Processing your deposit...</AlertDialogDescription>
@@ -352,7 +352,7 @@ export default function RechargePage() {
               <Button variant="outline" className="flex-1 bg-transparent" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button className="flex-1 bg-green-600 hover:bg-green-700" onClick={handleRetry}>
+              <Button className="flex-1" onClick={handleRetry}>
                 Try Again
               </Button>
             </div>
@@ -370,8 +370,8 @@ export default function RechargePage() {
       <AlertDialog open={showSuccessDialog}>
         <AlertDialogContent className="max-w-sm mx-auto rounded-2xl [&>button]:hidden">
           <AlertDialogHeader className="text-center">
-            <div className="w-20 h-20 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-              <CheckmarkCircle01Icon size={40} className="text-green-600" />
+            <div className="w-20 h-20 bg-primary/10 rounded-full mx-auto mb-4 flex items-center justify-center">
+              <CheckmarkCircle01Icon size={40} className="text-primary" />
             </div>
             <AlertDialogTitle className="text-center">Deposit Successful!</AlertDialogTitle>
             <AlertDialogDescription className="text-center space-y-2">

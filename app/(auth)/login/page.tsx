@@ -60,8 +60,8 @@ export default function LoginPage() {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <div className="bg-primary text-primary-foreground py-12 px-6 text-center rounded-b-[2rem]">
-        <div className="w-20 h-20 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center">
-          <span className="text-3xl font-bold">GW</span>
+        <div className="w-20 h-20 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden">
+          <img src="/favicon.ico" alt="Sanderson Farms" className="w-12 h-12 object-contain" />
         </div>
         <h1 className="text-2xl font-bold">Welcome Back</h1>
         <p className="text-primary-foreground/80 mt-1">Login to your account</p>

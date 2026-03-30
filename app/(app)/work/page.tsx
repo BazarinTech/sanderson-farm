@@ -27,7 +27,7 @@ function Page() {
   }, [mainDetails]);
   return (
     <div>
-      <Topbar title="Grover Tasks"/>
+      <Topbar title="Tasks"/>
       {/* Summary Section */}
         <div className="px-4 py-6 mb-20">
 

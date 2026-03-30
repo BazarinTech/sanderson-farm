@@ -34,7 +34,7 @@ import React, { useEffect, useState } from 'react'
 
 const menuItems = [
   { icon: InformationCircleIcon, label: "Withdraw Account", href: "/cashout-wallet" },
-  { icon: TelegramIcon, label: "Telegram Channel", href: "https://t.me/groverworker" },
+  { icon: TelegramIcon, label: "Telegram Channel", href: "https://t.me/sandersonfarms" },
   { icon: Ticket02Icon, label: "My Coupon", href: "/bonus" },
   { icon: WhatsappIcon, label: "Whatsapp group", href: "https://chat.whatsapp.com/Kp0Tyxk90qpEZS3OWwccXT" },
   { icon: File01Icon, label: "Records", href: "/records" },
@@ -61,15 +61,15 @@ function Page() {
 
   return (
     <div>
-      <Topbar title="Grover Profile" />
+      <Topbar title="Sanderson Profile" />
       {/* Header with Profile */}
       <div className="bg-primary text-primary-foreground pt-4 pb-8 px-4">
         <h1 className="text-center font-semibold mb-6">Mine</h1>
 
         {/* Profile Avatar and Info */}
         <div className="flex flex-col items-center">
-          <div className="w-20 h-20 rounded-full bg-primary-foreground/20 flex items-center justify-center mb-2 border-2 border-primary-foreground/30">
-            <span className="text-2xl font-bold">BD</span>
+          <div className="w-20 h-20 rounded-full bg-primary-foreground/20 flex items-center justify-center mb-2 border-2 border-primary-foreground/30 overflow-hidden">
+            <img src="/favicon.ico" alt="Avatar" className="w-12 h-12 object-contain" />
           </div>
           <div className="bg-primary-foreground/20 px-3 py-0.5 rounded-full text-sm flex items-center gap-1 mb-2">
             <span className="text-xs">▼</span>

@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Grover Worker",
-  description: "Together defining future of digital leverage",
+  title: "Sanderson Farms",
+  description: "Connecting farm workers with opportunities. Earn on your terms.",
 };
 
 export const dynamic = "force-dynamic"
