@@ -2,84 +2,50 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Progress } from "@/components/ui/progress"
 import {
   SmartPhone01Icon,
   CheckmarkCircle01Icon,
   InformationCircleIcon,
-  Loading01Icon,
-  Cancel01Icon,
 } from "hugeicons-react"
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
 import Topbar from "@/components/shared/topbar"
 import { useMainStore } from "@/lib/stores/use-main-store"
 import { toast } from "sonner"
-import { checkStkStatus, initiateDeposit } from "@/lib/backend/actions"
+import { initiateDeposit } from "@/lib/backend/actions"
 
 const PRESET_AMOUNTS = [900, 2300, 4500, 8500, 11500, 18000, 24000, 40000, 80000]
 
 export default function RechargePage() {
-  const router = useRouter()
   const [amount, setAmount] = useState("")
   const [mpesaPhone, setMpesaPhone] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
-  const [showStkDialog, setShowStkDialog] = useState(false)
-  const [showSuccessDialog, setShowSuccessDialog] = useState(false)
-  const [stkProgress, setStkProgress] = useState(0)
-  const [stkStatus, setStkStatus] = useState<"waiting" | "processing" | "success" | "failed">("waiting")
+  const [successMessage, setSuccessMessage] = useState("")
   const fetchMainDetails = useMainStore((state) => state.fetchMainDetails)
   const token = useMainStore((state) => state.token)
-  const [trackingID, setTrackingID] = useState("")
 
   const minDeposit = 900
   const maxDeposit = 160000
 
-  const handleCheckStatus = async() => {
-    try {
-      const response = await checkStkStatus({trackingID})
-      if(response.status === "Success") {
-        setStkStatus("success")
-        setTimeout(() => {
-                setShowStkDialog(false)
-                setShowSuccessDialog(true)
-                setTimeout(() => {
-                  setShowSuccessDialog(false)
-                  router.push("/records?tab=deposit")
-                }, 3000)
-              }, 1000)
-      }else{
-        setStkStatus("failed")
-      }
-    } catch (error) {
-      console.error("Error checking STK status:", error)
-    }
-  }
-
   const handleAmountSelect = (value: number) => {
     setAmount(value.toString())
     setError("")
+    setSuccessMessage("")
   }
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, "")
     setAmount(value)
     setError("")
+    setSuccessMessage("")
   }
 
   const handleInitiateSTK = async () => {
     setError("")
+    setSuccessMessage("")
 
     const numAmount = Number.parseInt(amount)
 
@@ -88,16 +54,12 @@ export default function RechargePage() {
       return
     }
 
-
     if (!/^0\d{9}$/.test(mpesaPhone) && !/^254\d{9}$/.test(mpesaPhone)) {
       setError("Please enter a valid M-Pesa phone number")
       return
     }
 
     setIsLoading(true)
-    setStkProgress(0)
-    setStkStatus("waiting")
-    setShowStkDialog(true)
     try {
       const response = await initiateDeposit({
         userID: token,
@@ -105,56 +67,18 @@ export default function RechargePage() {
         account: mpesaPhone,
         method: "mpesa",
       })
-      if(response.status === "Success") {
-        toast.success("STK Push sent! Please check your phone.")
+      if (response.status === "Success") {
+        setSuccessMessage(response.message || "STK Push sent! Please check your phone and enter your M-Pesa PIN.")
         fetchMainDetails(token)
-        if(response.trackingID){
-          setTrackingID(response.trackingID)
-        }
       } else {
-        toast.error(response.message || "Failed to initiate payment. Please try again.")
-        setShowStkDialog(false)
-        setStkStatus("failed")
+        setError(response.message || "Failed to initiate payment. Please try again.")
       }
     } catch (error) {
       console.error("Error initiating STK push:", error)
-      toast.error("Failed to initiate payment. Please try again.")
-      setShowStkDialog(false)
-      setStkStatus("failed")
-    }finally {
+      setError("Failed to initiate payment. Please try again.")
+    } finally {
       setIsLoading(false)
-      setStkStatus("processing")
     }
-
-    
-  }
-
-  // Simulate STK progress
-  useEffect(() => {
-    if (stkStatus === "processing") {
-      const interval = setInterval(() => {
-        setStkProgress((prev) => {
-          if (prev >= 100) {
-            clearInterval(interval)
-            handleCheckStatus()
-            return 100
-          }
-          return prev + 2
-        })
-      }, 500)
-
-      return () => clearInterval(interval)
-    }
-  }, [stkStatus, router])
-
-  const handleRetry = () => {
-    handleInitiateSTK()
-  }
-
-  const handleCancel = () => {
-    setShowStkDialog(false)
-    setStkProgress(0)
-    setStkStatus("waiting")
   }
 
   return (
@@ -239,6 +163,13 @@ export default function RechargePage() {
           <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-lg text-center mb-6">{error}</div>
         )}
 
+        {successMessage && (
+          <div className="bg-primary/10 border border-primary/20 rounded-xl p-4 mb-6 flex items-start gap-3">
+            <CheckmarkCircle01Icon size={20} className="text-primary shrink-0 mt-0.5" />
+            <p className="text-sm text-foreground">{successMessage}</p>
+          </div>
+        )}
+
         {/* Deposit Summary */}
         {amount && Number.parseInt(amount) > 0 && (
           <div className="bg-muted rounded-xl p-4 mb-6">
@@ -285,107 +216,6 @@ export default function RechargePage() {
           </div>
         </div>
       </div>
-
-      {/* STK Push Dialog */}
-      <AlertDialog open={showStkDialog}>
-        <AlertDialogContent className="max-w-sm mx-auto rounded-2xl [&>button]:hidden">
-          <AlertDialogHeader className="text-center">
-            {stkStatus === "waiting" && (
-              <>
-                <div className="w-16 h-16 bg-primary/10 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <Loading01Icon size={32} className="text-primary animate-spin" />
-                </div>
-                <AlertDialogTitle className="text-center">Sending STK Push...</AlertDialogTitle>
-                <AlertDialogDescription className="text-center">
-                  Please wait while we send the payment request to {mpesaPhone}
-                </AlertDialogDescription>
-              </>
-            )}
-
-            {stkStatus === "processing" && (
-              <>
-                <div className="w-16 h-16 bg-primary/10 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <SmartPhone01Icon size={32} className="text-primary" />
-                </div>
-                <AlertDialogTitle className="text-center">Check Your Phone</AlertDialogTitle>
-                <AlertDialogDescription className="text-center space-y-4">
-                  <p>
-                    Enter your M-Pesa PIN to complete the payment of{" "}
-                    <span className="font-bold text-foreground">
-                      KSH {Number.parseInt(amount || "0").toLocaleString()}
-                    </span>
-                  </p>
-                  <div className="space-y-2">
-                    <Progress value={stkProgress} className="h-2" />
-                    <p className="text-xs text-muted-foreground">Waiting for confirmation...</p>
-                  </div>
-                </AlertDialogDescription>
-              </>
-            )}
-
-            {stkStatus === "success" && (
-              <>
-                <div className="w-16 h-16 bg-primary/10 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <CheckmarkCircle01Icon size={32} className="text-primary" />
-                </div>
-                <AlertDialogTitle className="text-center">Payment Successful!</AlertDialogTitle>
-                <AlertDialogDescription className="text-center">Processing your deposit...</AlertDialogDescription>
-              </>
-            )}
-
-            {stkStatus === "failed" && (
-              <>
-                <div className="w-16 h-16 bg-red-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <Cancel01Icon size={32} className="text-red-600" />
-                </div>
-                <AlertDialogTitle className="text-center">Payment Failed</AlertDialogTitle>
-                <AlertDialogDescription className="text-center">
-                  The transaction was not completed. This could be due to insufficient balance, wrong PIN, or cancelled
-                  request.
-                </AlertDialogDescription>
-              </>
-            )}
-          </AlertDialogHeader>
-
-          {stkStatus === "failed" && (
-            <div className="flex gap-3 mt-4">
-              <Button variant="outline" className="flex-1 bg-transparent" onClick={handleCancel}>
-                Cancel
-              </Button>
-              <Button className="flex-1" onClick={handleRetry}>
-                Try Again
-              </Button>
-            </div>
-          )}
-
-          {stkStatus === "processing" && (
-            <Button variant="outline" className="w-full mt-4 bg-transparent" onClick={handleCancel}>
-              Cancel
-            </Button>
-          )}
-        </AlertDialogContent>
-      </AlertDialog>
-
-      {/* Success Dialog */}
-      <AlertDialog open={showSuccessDialog}>
-        <AlertDialogContent className="max-w-sm mx-auto rounded-2xl [&>button]:hidden">
-          <AlertDialogHeader className="text-center">
-            <div className="w-20 h-20 bg-primary/10 rounded-full mx-auto mb-4 flex items-center justify-center">
-              <CheckmarkCircle01Icon size={40} className="text-primary" />
-            </div>
-            <AlertDialogTitle className="text-center">Deposit Successful!</AlertDialogTitle>
-            <AlertDialogDescription className="text-center space-y-2">
-              <p>
-                <span className="font-bold text-foreground text-xl">
-                  KSH {Number.parseInt(amount || "0").toLocaleString()}
-                </span>
-              </p>
-              <p>has been added to your account</p>
-              <p className="text-xs">Redirecting to records...</p>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   )
 }
