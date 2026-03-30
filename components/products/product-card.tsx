@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { ArrowRight01Icon, Loading01Icon } from "hugeicons-react"
+import { Progress } from "@/components/ui/progress"
 import { useCurrency } from "@/lib/hooks/use-currency"
 import { useState } from "react";
 import { toast } from "sonner";
@@ -84,23 +85,19 @@ export function ProductCard({ID, name, image, max, duration, returns, order_limi
       </div>
 
       {/* Progress Bar and Buy Button */}
-      <div className="flex items-center gap-2">
+      <div className="gap-2">
         {/* Progress Section */}
-        <div className="flex-1 flex items-center gap-2">
-          {/* Circle indicator */}
-          <div className="w-6 h-6 rounded-full shrink-0" />
-          {/* Progress bar */}
-          <div className="flex-1 h-8 bg-muted-foreground/60 rounded-full overflow-hidden relative">
-            <div className="h-full bg-muted-foreground/80 rounded-full" style={{ width: `${100}%` }} />
-            <span className="absolute inset-0 flex items-center justify-center text-xs font-medium text-primary-foreground">
-             Limit {order_limit}
-            </span>
+        <div className="flex-1 space-y-1 mb-2">
+          <div className="flex justify-between text-xs text-muted-foreground">
+            <span>Order Limit</span>
+            <span>{order_limit}</span>
           </div>
+          <Progress value={100} className="h-2" />
         </div>
 
         {/* Buy Button */}
         <button className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors" disabled={isLoading} onClick={handleBuyProduct}>
-        {isLoading ? <>Processing... <Loading01Icon className="w-5 h-5" /></> : <>Enroll <ArrowRight01Icon className="w-5 h-5" /></>}
+        {isLoading ? <>Processing... <Loading01Icon className="w-5 h-5" /></> : <>Get Package <ArrowRight01Icon className="w-5 h-5" /></>}
           
         </button>
       </div>
