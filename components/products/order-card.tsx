@@ -22,7 +22,7 @@ interface OrderCardProps {
 export function OrderCard({ name, image, cycle, total, roll, status, daily, orderID }: OrderCardProps) {
   const [isPromoting, setIsPromoting] = useState(false)
   const src = image
-  ? `https://grover.xgramm.com/admin/uploads/${image}`
+  ? `https://sanderson.xgramm.com/admin/uploads/${image}`
   : "/placeholder.svg";
 
   return (
@@ -33,7 +33,7 @@ export function OrderCard({ name, image, cycle, total, roll, status, daily, orde
         <div className="flex gap-4">
           {/* Product Image */}
           <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg" >
-            <Image src={src} alt={name} fill className="object-cover" unoptimized={src.startsWith("https://grover.xgramm.com")}/>
+            <Image src={src} alt={name} fill className="object-cover" unoptimized={src.startsWith("https://sanderson.xgramm.com")}/>
             {status === "Expired" && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/40">
                 <span className="rotate-[-15deg] rounded bg-destructive px-2 py-0.5 text-xs font-bold text-white">

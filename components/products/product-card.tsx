@@ -16,7 +16,7 @@ export function ProductCard({ID, name, image, max, duration, returns, order_limi
   const [imageLoaded, setImageLoaded] = useState(false);
   
   const src = image
-  ? `https://grover.xgramm.com/admin/uploads/${image}`
+  ? `https://sanderson.xgramm.com/admin/uploads/${image}`
   : "/placeholder.svg";
 
   const handleBuyProduct = async () => {
@@ -58,7 +58,7 @@ export function ProductCard({ID, name, image, max, duration, returns, order_limi
             width={500}
             height={500}
             className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-            unoptimized={src.startsWith("https://grover.xgramm.com")}
+            unoptimized={src.startsWith("https://sanderson.xgramm.com")}
             onLoad={() => setImageLoaded(true)}
           />
         </div>
