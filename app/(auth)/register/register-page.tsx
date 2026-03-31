@@ -66,6 +66,7 @@ export default function RegisterPage() {
         const loginState = useMainStore.getState().loginState
         loginState()
         toast.success(response.message || "Registration successful")
+        sessionStorage.setItem('sf_show_welcome', 'true')
         router.push("/home")
       } else {
         toast.error(response.message || "Registration failed")

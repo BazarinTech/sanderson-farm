@@ -3,6 +3,7 @@ import { EventsSection } from '@/components/home/events-sections'
 import { NotificationTicker } from '@/components/home/notification-ticker'
 import { QuickActions } from '@/components/home/quick-actions'
 import { VideoHero } from '@/components/home/video-hero'
+import { WelcomeModal } from '@/components/home/welcome-modal'
 import { BottomNav } from '@/components/shared/bottombar'
 import Topbar from '@/components/shared/topbar'
 import { useMainStore } from '@/lib/stores/use-main-store'
@@ -40,6 +41,7 @@ function Page() {
           {/* </main> */}
          </div>
     
+      <WelcomeModal />
       <BottomNav />
       </div>
   )

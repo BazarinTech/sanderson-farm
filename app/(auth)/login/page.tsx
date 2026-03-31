@@ -47,6 +47,7 @@ export default function LoginPage() {
       toast.success(response.message || "Login successful")
       const loginState = useMainStore.getState().loginState
       loginState()
+      sessionStorage.setItem('sf_show_welcome', 'true')
       router.push("/home")
     } catch (error) {
       console.error("Login error:", error)
