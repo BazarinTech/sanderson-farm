@@ -17,7 +17,7 @@ const navItems = [
     icon: ShoppingBag01Icon,
   },
   {
-    label: "Work",
+    label: "Income",
     href: "/work",
     icon: Briefcase01Icon,
   },

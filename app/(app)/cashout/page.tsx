@@ -30,7 +30,7 @@ import { initiateWithdrawal } from "@/lib/backend/actions"
 import { toast } from "sonner"
 import { useCurrency } from "@/lib/hooks/use-currency"
 
-const PRESET_AMOUNTS = [500, 1000, 2000, 5000, 10000, 20000]
+const PRESET_AMOUNTS = [150, 240, 360, 1350, 2550, 4500]
 
 export default function CashoutPage() {
   const router = useRouter()

@@ -16,7 +16,7 @@ import { useMainStore } from "@/lib/stores/use-main-store"
 import { toast } from "sonner"
 import { initiateDeposit } from "@/lib/backend/actions"
 
-const PRESET_AMOUNTS = [900, 2300, 4500, 8500, 11500, 18000, 24000, 40000, 80000]
+const PRESET_AMOUNTS = [400, 800, 1200, 4500, 8500, 15000, 24000, 40000]
 
 export default function RechargePage() {
   const [amount, setAmount] = useState("")
@@ -27,8 +27,8 @@ export default function RechargePage() {
   const fetchMainDetails = useMainStore((state) => state.fetchMainDetails)
   const token = useMainStore((state) => state.token)
 
-  const minDeposit = 900
-  const maxDeposit = 160000
+  const minDeposit = 400
+  const maxDeposit = 80000
 
   const handleAmountSelect = (value: number) => {
     setAmount(value.toString())

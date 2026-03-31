@@ -68,7 +68,7 @@ export function OrderCard({ name, image, cycle, total, roll, status, daily, orde
             disabled={isPromoting || roll == 0}
           >
             <Speaker01Icon className="mr-2 h-5 w-5" />
-            {roll == 0 ? "Please come back later" : `Promote`}
+            {roll == 0 ? "Please come back later" : `Claim Income`}
           </Button>
         )}
       </div>
