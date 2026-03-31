@@ -4,9 +4,8 @@ import { VolumeHighIcon } from "hugeicons-react"
 import { useEffect, useState } from "react"
 
 const notifications = [
-  "07****9418 Recharge KSH220 success",
-  "03****2156 Withdraw KSH500 success",
-  "09****7832 Bonus KSH100 received",
+  "Giving up should never be an option.",
+  "Just do it!"
 ]
 
 export function NotificationTicker() {
@@ -22,7 +21,7 @@ export function NotificationTicker() {
   return (
     <div className="mx-4 bg-card rounded-xl p-4 flex items-center gap-3 shadow-sm border border-border w-full">
       <VolumeHighIcon className="w-5 h-5 text-muted-foreground shrink-0" />
-      <p className="text-sm text-foreground truncate animate-pulse">{notifications[currentIndex]}</p>
+      <p className="text-sm text-foreground truncate animate-pulse text-center w-full">{notifications[currentIndex]}</p>
     </div>
   )
 }
