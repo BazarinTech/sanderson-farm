@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'grover.xgramm.com',
+        hostname: 'sanderson.xgramm.com',
         pathname: '/admin/uploads/**',
       },
     ],
