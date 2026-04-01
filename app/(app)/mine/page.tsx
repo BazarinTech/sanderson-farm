@@ -34,14 +34,14 @@ import React, { useEffect, useState } from 'react'
 
 const menuItems = [
   { icon: InformationCircleIcon, label: "Withdraw Account", href: "/cashout-wallet" },
-  { icon: TelegramIcon, label: "Telegram Channel", href: "https://t.me/sandersonfarms" },
+  { icon: TelegramIcon, label: "Telegram Channel", href: "https://t.me/sandersonfarms_supply" },
   { icon: Ticket02Icon, label: "My Coupon", href: "/bonus" },
-  { icon: WhatsappIcon, label: "Whatsapp group", href: "https://chat.whatsapp.com/Kp0Tyxk90qpEZS3OWwccXT" },
+  { icon: WhatsappIcon, label: "Whatsapp group", href: "https://chat.whatsapp.com/D6NUwxi0T3D0FwbLCpFK4V?mode=gi_t" },
   { icon: File01Icon, label: "Records", href: "/records" },
   { icon: InformationSquareIcon, label: "About US", href: "/company" },
   { icon: LockPasswordIcon, label: "Reset Password", href: "/reset-password" },
-  { icon: CustomerServiceIcon, label: "Customer Service", href: "https://wa.me/12897500155?text=Hello%20I%20need%20help" },
-  { icon: Download02Icon, label: "App Download", href: "https://apk.e-droid.net/apk/app3897680-jc1e5h.apk?v=2" },
+  { icon: CustomerServiceIcon, label: "Customer Service", href: "https://wa.me/15793859075?text=Hello%20I%20need%20help" },
+  { icon: Download02Icon, label: "App Download", href: "https://apk.e-droid.net/apk/app3980533-tdv41u.apk?v=2" },
   { icon: Logout01Icon, label: "Logout", href: "/login" },
 ]
 

@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 
-const WHATSAPP_GROUP_URL = 'https://chat.whatsapp.com/YOUR_GROUP_LINK_HERE'
+const WHATSAPP_GROUP_URL = 'https://chat.whatsapp.com/D6NUwxi0T3D0FwbLCpFK4V?mode=gi_t'
 const STORAGE_KEY = 'sf_show_welcome'
 
 export function WelcomeModal() {

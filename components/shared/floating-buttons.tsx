@@ -7,7 +7,7 @@ export function FloatingButtons() {
   return (
     <div className="fixed bottom-24 right-4 flex flex-col gap-3 z-40">
       <button className="w-14 h-14 rounded-full bg-accent flex items-center justify-center shadow-lg hover:scale-105 transition-transform" onClick={() => {
-        router.push('https://wa.me/12897500155?text=Hello%20I%20need%20help')
+        router.push('https://wa.me/15793859075?text=Hello%20I%20need%20help')
       }}>
         <CustomerSupportIcon className="w-6 h-6 text-accent-foreground" />
       </button>
