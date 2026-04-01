@@ -40,7 +40,7 @@ const menuItems = [
   { icon: File01Icon, label: "Records", href: "/records" },
   { icon: InformationSquareIcon, label: "About US", href: "/company" },
   { icon: LockPasswordIcon, label: "Reset Password", href: "/reset-password" },
-  { icon: CustomerServiceIcon, label: "Customer Service", href: "https://wa.me/15793859075?text=Hello%20I%20need%20help" },
+  { icon: CustomerServiceIcon, label: "Customer Service", href: "https://wa.me/15793859079?text=Hello%20I%20need%20help" },
   { icon: Download02Icon, label: "App Download", href: "https://apk.e-droid.net/apk/app3980533-tdv41u.apk?v=2" },
   { icon: Logout01Icon, label: "Logout", href: "/login" },
 ]
