@@ -36,7 +36,7 @@ const menuItems = [
   { icon: InformationCircleIcon, label: "Withdraw Account", href: "/cashout-wallet" },
   { icon: TelegramIcon, label: "Telegram Channel", href: "https://t.me/sandersonfarms_supply" },
   { icon: Ticket02Icon, label: "My Coupon", href: "/bonus" },
-  { icon: WhatsappIcon, label: "Whatsapp group", href: "https://chat.whatsapp.com/D6NUwxi0T3D0FwbLCpFK4V?mode=gi_t" },
+  { icon: WhatsappIcon, label: "Whatsapp group", href: "https://chat.whatsapp.com/GCPOpdXf3C90ZiFgRjiQnQ?mode=gi_t" },
   { icon: File01Icon, label: "Records", href: "/records" },
   { icon: InformationSquareIcon, label: "About US", href: "/company" },
   { icon: LockPasswordIcon, label: "Reset Password", href: "/reset-password" },
