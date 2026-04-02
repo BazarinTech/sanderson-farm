@@ -6,6 +6,7 @@ import { BottomNav } from '@/components/shared/bottombar'
 import Topbar from '@/components/shared/topbar'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useCurrency } from '@/lib/hooks/use-currency'
 import { useMainStore } from '@/lib/stores/use-main-store'
 import { Logout } from '@hugeicons/core-free-icons'
@@ -50,6 +51,7 @@ function Page() {
   const [islogoutAlertOpen, setIslogoutAlertOpen] = useState(false)
   const loginState = useMainStore((state) => state.loginState)
   const mainDetails = useMainStore((state) => state.mainDetails)
+  const isMainFetching = useMainStore((state) => state.isMainFetching)
 
   useEffect(() => {
     loginState()
@@ -58,6 +60,8 @@ function Page() {
   const handleLogoutClick = () => {
     setIslogoutAlertOpen(true)
   }
+
+  const loading = isMainFetching && !mainDetails
 
   return (
     <div>
@@ -71,12 +75,22 @@ function Page() {
           <div className="w-20 h-20 rounded-full bg-primary-foreground/20 flex items-center justify-center mb-2 border-2 border-primary-foreground/30 overflow-hidden">
             <img src="/favicon.ico" alt="Avatar" className="w-12 h-12 object-contain" />
           </div>
-          <div className="bg-primary-foreground/20 px-3 py-0.5 rounded-full text-sm flex items-center gap-1 mb-2">
-            <span className="text-xs">▼</span>
-            <span>{mainDetails?.wallet.level}</span>
-          </div>
-          <p className="font-semibold">ID : {mainDetails?.user.ID}</p>
-          <p className="text-primary-foreground/80 text-sm">{mainDetails?.user.phone}</p>
+          {loading ? (
+            <>
+              <Skeleton className="h-6 w-20 rounded-full mb-2 bg-primary-foreground/30" />
+              <Skeleton className="h-4 w-28 mb-1 bg-primary-foreground/30" />
+              <Skeleton className="h-4 w-24 bg-primary-foreground/30" />
+            </>
+          ) : (
+            <>
+              <div className="bg-primary-foreground/20 px-3 py-0.5 rounded-full text-sm flex items-center gap-1 mb-2">
+                <span className="text-xs">▼</span>
+                <span>{mainDetails?.wallet.level}</span>
+              </div>
+              <p className="font-semibold">ID : {mainDetails?.user.ID}</p>
+              <p className="text-primary-foreground/80 text-sm">{mainDetails?.user.phone}</p>
+            </>
+          )}
         </div>
       </div>
 
@@ -85,8 +99,12 @@ function Page() {
         <div className="grid grid-cols-2 gap-3 mb-4">
           <Card className="p-4 bg-card">
             <div className="text-center mb-3">
-              <p className="text-lg font-bold text-foreground">{useCurrency(mainDetails?.wallet.today_income ?? 0)}</p>
-              <p className="text-xs text-muted-foreground">Today&apos;s Product Income</p>
+              {loading ? (
+                <><Skeleton className="h-6 w-24 mx-auto mb-1" /><Skeleton className="h-3 w-32 mx-auto" /></>
+              ) : (
+                <><p className="text-lg font-bold text-foreground">{useCurrency(mainDetails?.wallet.today_income ?? 0)}</p>
+                <p className="text-xs text-muted-foreground">Today&apos;s Product Income</p></>
+              )}
             </div>
             <Button
               variant="outline"
@@ -100,8 +118,12 @@ function Page() {
 
           <Card className="p-4 bg-card">
             <div className="text-center mb-3">
-              <p className="text-lg font-bold text-foreground">{mainDetails?.referral.active_downlines}</p>
-              <p className="text-xs text-muted-foreground">Active Team</p>
+              {loading ? (
+                <><Skeleton className="h-6 w-16 mx-auto mb-1" /><Skeleton className="h-3 w-24 mx-auto" /></>
+              ) : (
+                <><p className="text-lg font-bold text-foreground">{mainDetails?.referral.active_downlines}</p>
+                <p className="text-xs text-muted-foreground">Active Team</p></>
+              )}
             </div>
             <Button className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => router.push('/team')}>
               <Gif01Icon size={16} className="mr-2" />

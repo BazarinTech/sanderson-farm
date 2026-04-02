@@ -3,12 +3,31 @@
 import { OrderCard } from '@/components/products/order-card'
 import { BottomNav } from '@/components/shared/bottombar'
 import Topbar from '@/components/shared/topbar'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useMainStore } from '@/lib/stores/use-main-store'
 import { useEffect, useState } from 'react'
 
+function OrderCardSkeleton() {
+  return (
+    <div className="rounded-xl bg-background p-4 shadow-sm border border-border w-full">
+      <Skeleton className="h-5 w-36 mb-3" />
+      <div className="flex gap-4">
+        <Skeleton className="h-24 w-24 rounded-lg shrink-0" />
+        <div className="flex-1 space-y-2 py-1">
+          <div className="flex justify-between"><Skeleton className="h-4 w-24" /><Skeleton className="h-4 w-16" /></div>
+          <div className="flex justify-between"><Skeleton className="h-4 w-12" /><Skeleton className="h-4 w-10" /></div>
+          <div className="flex justify-between"><Skeleton className="h-4 w-28" /><Skeleton className="h-4 w-16" /></div>
+        </div>
+      </div>
+      <Skeleton className="h-11 w-full rounded-full mt-4" />
+    </div>
+  )
+}
+
 function Page() {
   const mainDetails = useMainStore((state) => state.mainDetails)
+  const isMainFetching = useMainStore((state) => state.isMainFetching)
   const [validOrders, setValidOrders] = useState<InvestmentOrder[]>([]);
   const [expiredOrders, setExpiredOrders] = useState<InvestmentOrder[]>([]);
 
@@ -49,7 +68,14 @@ function Page() {
 
           <TabsContent value="valid" className="mt-5">
             <div className="space-y-4 p-4">
-              {validOrders.length > 0 ? (
+              {isMainFetching && !mainDetails && (
+                <>
+                  <OrderCardSkeleton />
+                  <OrderCardSkeleton />
+                  <OrderCardSkeleton />
+                </>
+              )}
+              {!isMainFetching && validOrders.length > 0 ? (
                 validOrders.map((order) => (
                   <OrderCard
                     key={order.ID}
@@ -65,15 +91,22 @@ function Page() {
                   />
                 ))
               ) : (
-                <p className="py-8 text-center text-muted-foreground">No valid orders found</p>
+                !isMainFetching && <p className="py-8 text-center text-muted-foreground">No valid orders found</p>
               )}
-              <p className="py-4 text-center text-sm text-muted-foreground">none more</p>
+              {!isMainFetching && <p className="py-4 text-center text-sm text-muted-foreground">none more</p>}
             </div>
           </TabsContent>
 
           <TabsContent value="expired" className="mt-5">
             <div className="space-y-4 p-4">
-              {expiredOrders.length > 0 ? (
+              {isMainFetching && !mainDetails && (
+                <>
+                  <OrderCardSkeleton />
+                  <OrderCardSkeleton />
+                  <OrderCardSkeleton />
+                </>
+              )}
+              {!isMainFetching && expiredOrders.length > 0 ? (
                 expiredOrders.map((order) => (
                   <OrderCard
                     key={order.ID}
@@ -89,9 +122,9 @@ function Page() {
                   />
                 ))
               ) : (
-                <p className="py-8 text-center text-muted-foreground">No expired orders found</p>
+                !isMainFetching && <p className="py-8 text-center text-muted-foreground">No expired orders found</p>
               )}
-              <p className="py-4 text-center text-sm text-muted-foreground">none more</p>
+              {!isMainFetching && <p className="py-4 text-center text-sm text-muted-foreground">none more</p>}
             </div>
           </TabsContent>
         </Tabs>
