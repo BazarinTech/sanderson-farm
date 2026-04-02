@@ -19,7 +19,7 @@ const actions = [
   { icon: MarketingIcon, label: "Influencer", color: "bg-primary", link: "/incentive" },
   { icon: TaskDone01Icon, label: "Records", color: "bg-primary", link: "/records" },
   { icon: InformationCircleIcon, label: "About", color: "bg-primary", link: "/company" },
-  { icon: WhatsappIcon, label: "Whatsapp Group", color: "bg-primary", link: "https://chat.whatsapp.com/GCPOpdXf3C90ZiFgRjiQnQ?mode=gi_t" },
+  { icon: WhatsappIcon, label: "Whatsapp Group", color: "bg-primary", link: "https://chat.whatsapp.com/CYXaUpdk1xw3yADFCbF33w?mode=gi_t" },
   { icon: WhatsappBusinessIcon, label: "Whatsapp Channel", color: "bg-primary", link: "https://whatsapp.com/channel/0029Vb7WoPs6rsQrOLQmZi0s" }
 ]
 
