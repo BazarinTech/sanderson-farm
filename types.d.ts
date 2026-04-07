@@ -226,7 +226,7 @@ type CheckSTKStatus = {
 }
 
 type CashoutWalletSetup = CommonFetch & {
-    type: 'create' | 'update'
+    type: 'create' | 'update' | 'update_pin'
     phone: string
     accountName: string
     pin: string
