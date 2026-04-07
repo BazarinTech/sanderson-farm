@@ -118,13 +118,13 @@ export default function CashoutPage() {
       return
     }
 
-    if (pin !== mainDetails?.wallet.withdrawal_pin) {
-      setShowPinDialog(false)
-      setPin("")
-      setErrorMessage("Invalid withdrawal PIN. Please try again.")
-      setShowErrorDialog(true)
-      return
-    }
+    // if (pin !== mainDetails?.wallet.withdrawal_pin) {
+    //   setShowPinDialog(false)
+    //   setPin("")
+    //   setErrorMessage("Invalid withdrawal PIN. Please try again.")
+    //   setShowErrorDialog(true)
+    //   return
+    // }
 
     setIsLoading(true)
     try {
