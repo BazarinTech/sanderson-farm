@@ -170,12 +170,12 @@ export default function CashoutWalletPage() {
       return
     }
 
-    // Mock PIN verification - in real app, verify against backend
-    const correctPin = mainDetails?.wallet.withdrawal_pin || "1234"
-    if (currentPin !== correctPin) {
-      setError("Incorrect withdrawal PIN")
-      return
-    }
+    // // Mock PIN verification - in real app, verify against backend
+    // const correctPin = mainDetails?.wallet.withdrawal_pin || "1234"
+    // if (currentPin !== correctPin) {
+    //   setError("Incorrect withdrawal PIN")
+    //   return
+    // }
 
     setIsLoading(true)
     try {
@@ -217,12 +217,12 @@ export default function CashoutWalletPage() {
       return
     }
 
-    // Mock PIN verification
-    const correctPin = mainDetails?.wallet.withdrawal_pin || "1234"
-    if (currentPin !== correctPin) {
-      setError("Incorrect withdrawal PIN")
-      return
-    }
+    // // Mock PIN verification
+    // const correctPin = mainDetails?.wallet.withdrawal_pin || "1234"
+    // if (currentPin !== correctPin) {
+    //   setError("Incorrect withdrawal PIN")
+    //   return
+    // }
 
     if (!newPin) {
       setError("Please enter a new PIN")
@@ -251,7 +251,7 @@ export default function CashoutWalletPage() {
         phone: mpesaPhone,
         accountName,
         pin: newPin,
-        type: "update",
+        type: "update_pin",
       })
       if (response.status == 'Success') {
         fetchMainDetails(token)
